@@ -2895,29 +2895,49 @@ var _objectWithoutProperties=require("@babel/runtime/helpers/objectWithoutProper
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.getProductsAsync = getProductsAsync;
 
 var _commerce = _interopRequireDefault(require("@chec/commerce.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Import the Commerce module
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 var public_api_key = "pk_test_273072b92c2d1f1cb13ff4cd03ec581e32aea9bd47ebb"; // Create a Commerce instance
 
 var commerce = new _commerce.default("".concat(public_api_key));
-commerce.products.list().then(function (product) {
-  return console.log(product);
-});
-var _default = "hello commonjs";
-exports.default = _default;
+
+function getProductsAsync() {
+  return _getProductsAsync.apply(this, arguments);
+}
+
+function _getProductsAsync() {
+  _getProductsAsync = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return commerce.products.list();
+
+          case 2:
+            return _context.abrupt("return", _context.sent);
+
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _getProductsAsync.apply(this, arguments);
+}
 },{"@chec/commerce.js":"../../node_modules/@chec/commerce.js/lib/index.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
-var _commonjs = _interopRequireDefault(require("./commonjs"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-console.log(_commonjs.default);
+var _commonjs = require("./commonjs");
 },{"./commonjs":"commonjs.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -2946,7 +2966,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60025" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63227" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -3123,4 +3143,4 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/bundle.js.map
+//# sourceMappingURL=bundle.js.map

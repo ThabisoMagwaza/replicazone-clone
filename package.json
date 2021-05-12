@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "parcel dist/js/index.js --out-dir dist/js/ --out-file bundle.js --public-url ./dist/"
+    "build": "parcel dist/js/index.js --out-dir dist/js/ --out-file bundle.js --public-url ."
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,8 @@
   "devDependencies": {
     "parcel-bundler": "^1.12.5"
   },
+
+
   "dependencies": {
     "@chec/commerce.js": "^2.4.1"
   }

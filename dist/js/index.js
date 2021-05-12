@@ -1,3 +1,3 @@
-import message from "./commonjs";
+import { getProductsAsync } from "./commonjs";
 
-console.log(message);
+// getProductsAsync().then((products) => console.log(products));
