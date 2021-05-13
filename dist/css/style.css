@@ -1,4 +1,11 @@
+/* --------------------- CUSTOM PROPERTIES ------------------------- */
+:root {
+    --color-logo: #429bfc;
+}
+
+
 /* --------------------- RESETS ------------------------- */
+
 * {
     margin: 0;
     padding: 0;
@@ -24,6 +31,11 @@ body {
 .footer__content {
     width: 60vw;
     margin: 0 auto;
+}
+
+.container {
+    min-height: 70vh;
+    position: relative;
 }
 
 .header__content {
@@ -192,6 +204,75 @@ body {
     background-color:#1a4db3 ;
     transform: translateY(-2px);
     box-shadow: 0 2px 10px rgb(17 52 120 / 50%);
+
+}/* --------------------- LOADER ------------------------- */
+
+.blob {
+    background-color: var(--color-logo);
+    border-radius: 50%;
+}
+
+.blob--1 {
+    width: 10rem;
+    height: 10rem;
+
+    animation: rotateLargeCircle 2s ease-in-out infinite alternate-reverse;
+}
+
+.blob--2 {
+    width: 5rem;
+    height: 5rem;
+    animation: rotateSmall 2s ease-in-out infinite alternate-reverse;
+}   
+
+@keyframes rotateSmall {
+    0% {
+        transform: translate(5rem,-2rem);
+    }
+
+    50% {
+        transform: translate(-4rem,-13rem);
+    }
+
+    100% {
+        transform: translate(-4rem,-2rem);
+    }
+}
+
+@keyframes rotateLargeCircle {
+    0% {
+        transform: translate(0,0);
+    }
+
+    50% {
+        transform: translate(0,2rem);
+    }
+}
+
+.loader {
+    filter: url("#goo");
+    padding: 5rem;
+
+    display: grid;
+    place-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+svg {
+    display: none;
+}
+
+.loader-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    display: grid;
+    place-items: center;
 }
 
 /* --------------------- FOOTER ------------------------- */
@@ -204,8 +285,4 @@ body {
 
     font-size: 1.2rem;
     font-weight: 700;
-}
-
-.footer__content {
-    
 }

@@ -14,6 +14,7 @@ export default function makeCard(product, isCardLeft) {
         id="quantity"
         class="card__input"
         value="1"
+        max="${product.inventory.available}"
       />
     </div>
     <div class="card__input-group">
