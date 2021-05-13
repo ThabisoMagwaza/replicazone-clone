@@ -250,7 +250,7 @@ body {
 }
 
 .loader {
-    filter: url("#goo");
+    filter: url("../img/goo.svg#goo");
     padding: 5rem;
 
     display: grid;
