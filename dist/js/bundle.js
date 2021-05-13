@@ -2934,11 +2934,37 @@ function _getProductsAsync() {
   }));
   return _getProductsAsync.apply(this, arguments);
 }
-},{"@chec/commerce.js":"../../node_modules/@chec/commerce.js/lib/index.js"}],"index.js":[function(require,module,exports) {
+},{"@chec/commerce.js":"../../node_modules/@chec/commerce.js/lib/index.js"}],"cardTemplate.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = makeCard;
+
+function makeCard(product, isCardLeft) {
+  return "<div class=\"card ".concat(isCardLeft ? "card--left" : "", "\">\n  <h2 class=\"card__heading\">").concat(product.name, "</h2>\n  <p class=\"card__description\">").concat(product.description.replace(new RegExp("</?p>", "g"), ""), "</p>\n  <div class=\"card__purchase-block\">\n    <div class=\"card__input-group card__input-group--quantity\">\n      <label for=\"quantity\" class=\"card__label\">Quantity</label>\n      <input\n        type=\"number\"\n        name=\"quantity\"\n        id=\"quantity\"\n        class=\"card__input\"\n        value=\"1\"\n      />\n    </div>\n    <div class=\"card__input-group\">\n      <label for=\"format\" class=\"card__label\">Format</label>\n      <select name=\"format\" id=\"format\" class=\"card__input\">\n        <option value=\"physical\" selected>Physical Copy</option>\n        <option value=\"digital\">Digital Copy (.jpg)</option>\n      </select>\n    </div>\n\n    <p class=\"card__price\">").concat(product.price.formatted_with_symbol, "</p>\n    <button class=\"card__btn\" data-productId=\"").concat(product.id, "\">Add to cart</button>\n  </div>\n  <div class=\"card__image-box ").concat(isCardLeft ? "card__image-box--left" : "", "\">\n    <img\n      src=\"").concat(product.media.source, "\"\n      alt=\"High-quality replica of The Starry Night\"\n      class=\"card__image  ").concat(isCardLeft ? "card__image--left" : "", "\"\n    />\n  </div>\n</div>");
+}
+},{}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _commonjs = require("./commonjs");
-},{"./commonjs":"commonjs.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+var _cardTemplate = _interopRequireDefault(require("./cardTemplate"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var cardsContainer = document.querySelector(".container");
+(0, _commonjs.getProductsAsync)().then(function (products) {
+  var cardStrings = products.data.map(function (product, index) {
+    var isCardLeft = (index + 1) % 2 === 0 ? true : false; // alternate type of card
+
+    return (0, _cardTemplate.default)(product, isCardLeft);
+  });
+  debugger;
+  cardsContainer.insertAdjacentHTML("afterbegin", cardStrings.join("\n"));
+});
+},{"./commonjs":"commonjs.js","./cardTemplate":"cardTemplate.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2966,7 +2992,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63227" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65396" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
