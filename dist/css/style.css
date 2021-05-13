@@ -19,7 +19,9 @@ body {
 
 /* --------------------- Header ------------------------- */
 
-.container, .header__content {
+.container, 
+.header__content,
+.footer__content {
     width: 60vw;
     margin: 0 auto;
 }
@@ -190,4 +192,20 @@ body {
     background-color:#1a4db3 ;
     transform: translateY(-2px);
     box-shadow: 0 2px 10px rgb(17 52 120 / 50%);
+}
+
+/* --------------------- FOOTER ------------------------- */
+
+.footer {
+    border-top: solid 1px #ddd;
+    padding: 5rem;
+    background-color: #fafafa;
+    border-top: 1px solid #eaeaea;
+
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.footer__content {
+    
 }
