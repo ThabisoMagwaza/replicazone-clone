@@ -27,6 +27,6 @@ export default function createCartSummaryCard(item) {
         </button>
       </div>
     </div>
-    <p class="cart-summary__item-price">${line_total.formatted_with_symbol}</p>
+    <p class="cart-summary__item-price">${item.line_total.formatted_with_symbol}</p>
   </div>`;
 }

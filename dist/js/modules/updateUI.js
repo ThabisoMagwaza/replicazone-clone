@@ -5,6 +5,7 @@ import anime from "animejs/lib/anime.es.js";
 let cardsContainer = document.querySelector(".container");
 let loader = document.querySelector(".loader");
 let cartPriceUI = document.querySelector(".header__value");
+let cartSummaryUI = document.querySelector(".cart-summary__items");
 
 export function updateProductsUI(products) {
   let altenator = 0;
@@ -40,9 +41,7 @@ export function updateCartPriceUI(price) {
 }
 
 export function updateCartSummaryUI(lineItems) {
-  debugger;
   let cartSummaryStrings = lineItems.map((item) => createCartSummaryCard(item));
-  document
-    .querySelector(".cart-summary__items")
-    .insertAdjacentHTML("afterbegin", cartSummaryStrings.join("\n"));
+  cartSummaryUI.innerHTML = "";
+  cartSummaryUI.insertAdjacentHTML("afterbegin", cartSummaryStrings.join("\n"));
 }

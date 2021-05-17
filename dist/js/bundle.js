@@ -3009,7 +3009,7 @@ exports.default = createCartSummaryCard;
 
 function createCartSummaryCard(item) {
   debugger;
-  return "<div class=\"cart-summary__item\">\n    <div class=\"cart-summary__item-header\">\n      <img\n        src=\"".concat(item.media.source, "\"\n        alt=\"").concat(item.name, " image\"\n      />\n      <h4>").concat(item.name, "</h4>\n    </div>\n    <button class=\"summary__item-btn-delete\">\n      <svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path\n          d=\"M22 4v6.47H12v3.236h40V10.47H42V4H22zm3.333 6.47V7.235H38.67v3.235H25.333zm20.001 9.707h3.333V59H15.334V20.177h3.333v35.588h26.667V20.177zm-15 29.116V23.412h3.334v25.881h-3.334z\"\n        ></path>\n      </svg>\n    </button>\n    <div class=\"cart-summary__quantity\">\n      <h5>Quantity</h5>\n      <div class=\"cart-summary__quantity-btns\">\n        <button class=\"cart-summary__quantity-btn dec\" data-productId=").concat(item.id, ">\n          <img src=\"./img/minus.svg\" alt=\"minus icon\" />\n        </button>\n        <span class=\"val\">").concat(item.quantity, "</span>\n        <button class=\"cart-summary__quantity-btn inc\" data-productId=").concat(item.id, ">\n          <img src=\"./img/cross.svg\" alt=\"plus icon\" />\n        </button>\n      </div>\n    </div>\n    <p class=\"cart-summary__item-price\">").concat(line_total.formatted_with_symbol, "</p>\n  </div>");
+  return "<div class=\"cart-summary__item\">\n    <div class=\"cart-summary__item-header\">\n      <img\n        src=\"".concat(item.media.source, "\"\n        alt=\"").concat(item.name, " image\"\n      />\n      <h4>").concat(item.name, "</h4>\n    </div>\n    <button class=\"summary__item-btn-delete\">\n      <svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path\n          d=\"M22 4v6.47H12v3.236h40V10.47H42V4H22zm3.333 6.47V7.235H38.67v3.235H25.333zm20.001 9.707h3.333V59H15.334V20.177h3.333v35.588h26.667V20.177zm-15 29.116V23.412h3.334v25.881h-3.334z\"\n        ></path>\n      </svg>\n    </button>\n    <div class=\"cart-summary__quantity\">\n      <h5>Quantity</h5>\n      <div class=\"cart-summary__quantity-btns\">\n        <button class=\"cart-summary__quantity-btn dec\" data-productId=").concat(item.id, ">\n          <img src=\"./img/minus.svg\" alt=\"minus icon\" />\n        </button>\n        <span class=\"val\">").concat(item.quantity, "</span>\n        <button class=\"cart-summary__quantity-btn inc\" data-productId=").concat(item.id, ">\n          <img src=\"./img/cross.svg\" alt=\"plus icon\" />\n        </button>\n      </div>\n    </div>\n    <p class=\"cart-summary__item-price\">").concat(item.line_total.formatted_with_symbol, "</p>\n  </div>");
 }
 },{}],"../../node_modules/animejs/lib/anime.es.js":[function(require,module,exports) {
 "use strict";
@@ -4799,6 +4799,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var cardsContainer = document.querySelector(".container");
 var loader = document.querySelector(".loader");
 var cartPriceUI = document.querySelector(".header__value");
+var cartSummaryUI = document.querySelector(".cart-summary__items");
 
 function updateProductsUI(products) {
   var altenator = 0;
@@ -4836,11 +4837,11 @@ function updateCartPriceUI(price) {
 }
 
 function updateCartSummaryUI(lineItems) {
-  debugger;
   var cartSummaryStrings = lineItems.map(function (item) {
     return (0, _cartSummaryTemplate.default)(item);
   });
-  document.querySelector(".cart-summary__items").insertAdjacentHTML("afterbegin", cartSummaryStrings.join("\n"));
+  cartSummaryUI.innerHTML = "";
+  cartSummaryUI.insertAdjacentHTML("afterbegin", cartSummaryStrings.join("\n"));
 }
 },{"./cardTemplate":"modules/cardTemplate.js","./cartSummaryTemplate":"modules/cartSummaryTemplate.js","animejs/lib/anime.es.js":"../../node_modules/animejs/lib/anime.es.js"}],"index.js":[function(require,module,exports) {
 "use strict";
@@ -4886,6 +4887,7 @@ function closeCartSummary() {
 }
 
 function openCartSummary() {
+  (0, _updateUI.updateCartSummaryUI)(currentCart.line_items);
   summaryCart.classList.remove("cart-summary--hidden");
 }
 },{"./modules/commonjs":"modules/commonjs.js","./modules/updateUI":"modules/updateUI.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -4916,7 +4918,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60983" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60294" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

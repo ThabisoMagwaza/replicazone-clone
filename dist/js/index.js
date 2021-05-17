@@ -45,5 +45,6 @@ function closeCartSummary() {
 }
 
 function openCartSummary() {
+  updateCartSummaryUI(currentCart.line_items);
   summaryCart.classList.remove("cart-summary--hidden");
 }
