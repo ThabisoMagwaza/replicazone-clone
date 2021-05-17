@@ -6,6 +6,7 @@ let cardsContainer = document.querySelector(".container");
 let loader = document.querySelector(".loader");
 let cartPriceUI = document.querySelector(".header__value");
 let cartSummaryUI = document.querySelector(".cart-summary__items");
+let cartSammaryTotalUI = document.querySelector(".cart-summary__value");
 
 export function updateProductsUI(products) {
   let altenator = 0;
@@ -40,8 +41,12 @@ export function updateCartPriceUI(price) {
   });
 }
 
-export function updateCartSummaryUI(lineItems) {
-  let cartSummaryStrings = lineItems.map((item) => createCartSummaryCard(item));
+export function updateCartSummaryUI(cart) {
+  let cartSummaryStrings = cart.line_items.map((item) =>
+    createCartSummaryCard(item)
+  );
   cartSummaryUI.innerHTML = "";
   cartSummaryUI.insertAdjacentHTML("afterbegin", cartSummaryStrings.join("\n"));
+
+  cartSammaryTotalUI.textContent = cart.subtotal.formatted_with_symbol;
 }

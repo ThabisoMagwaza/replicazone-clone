@@ -40,7 +40,7 @@ function updateCartItem(event) {
   if (!event.target.closest(".cart-summary__quantity-btn")) return;
   let dataset = event.target.closest(".cart-summary__quantity-btn").dataset;
   let currentItem = currentCart.line_items.find(
-    (item) => (item.id = dataset.productid)
+    (item) => item.id === dataset.productid
   );
   updateCart(
     dataset.productid,
@@ -75,11 +75,11 @@ function closeCartSummary() {
 }
 
 function openCartSummary() {
-  updateCartSummaryUI(currentCart.line_items);
+  updateCartSummaryUI(currentCart);
   summaryCart.classList.remove("cart-summary--hidden");
 }
 
 function updateCartState(res) {
   currentCart = res.cart;
-  updateCartSummaryUI(currentCart.line_items);
+  updateCartSummaryUI(currentCart);
 }

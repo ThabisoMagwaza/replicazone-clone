@@ -4855,6 +4855,7 @@ var cardsContainer = document.querySelector(".container");
 var loader = document.querySelector(".loader");
 var cartPriceUI = document.querySelector(".header__value");
 var cartSummaryUI = document.querySelector(".cart-summary__items");
+var cartSammaryTotalUI = document.querySelector(".cart-summary__value");
 
 function updateProductsUI(products) {
   var altenator = 0;
@@ -4891,12 +4892,13 @@ function updateCartPriceUI(price) {
   });
 }
 
-function updateCartSummaryUI(lineItems) {
-  var cartSummaryStrings = lineItems.map(function (item) {
+function updateCartSummaryUI(cart) {
+  var cartSummaryStrings = cart.line_items.map(function (item) {
     return (0, _cartSummaryTemplate.default)(item);
   });
   cartSummaryUI.innerHTML = "";
   cartSummaryUI.insertAdjacentHTML("afterbegin", cartSummaryStrings.join("\n"));
+  cartSammaryTotalUI.textContent = cart.subtotal.formatted_with_symbol;
 }
 },{"./cardTemplate":"modules/cardTemplate.js","./cartSummaryTemplate":"modules/cartSummaryTemplate.js","animejs/lib/anime.es.js":"../../node_modules/animejs/lib/anime.es.js"}],"index.js":[function(require,module,exports) {
 "use strict";
@@ -4932,7 +4934,7 @@ function updateCartItem(event) {
   if (!event.target.closest(".cart-summary__quantity-btn")) return;
   var dataset = event.target.closest(".cart-summary__quantity-btn").dataset;
   var currentItem = currentCart.line_items.find(function (item) {
-    return item.id = dataset.productid;
+    return item.id === dataset.productid;
   });
   (0, _commonjs.updateCart)(dataset.productid, dataset.action == "inc" ? currentItem.quantity + 1 : currentItem.quantity - 1).then(function (res) {
     return updateCartState(res);
@@ -4963,13 +4965,13 @@ function closeCartSummary() {
 }
 
 function openCartSummary() {
-  (0, _updateUI.updateCartSummaryUI)(currentCart.line_items);
+  (0, _updateUI.updateCartSummaryUI)(currentCart);
   summaryCart.classList.remove("cart-summary--hidden");
 }
 
 function updateCartState(res) {
   currentCart = res.cart;
-  (0, _updateUI.updateCartSummaryUI)(currentCart.line_items);
+  (0, _updateUI.updateCartSummaryUI)(currentCart);
 }
 },{"./modules/commonjs":"modules/commonjs.js","./modules/updateUI":"modules/updateUI.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
