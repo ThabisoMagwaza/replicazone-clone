@@ -3,6 +3,7 @@ import {
   createCart,
   addToCart,
   removeFromCart,
+  updateCart,
 } from "./modules/commonjs";
 import {
   updateProductsUI,
@@ -11,6 +12,7 @@ import {
 } from "./modules/updateUI";
 
 let cartSummaryRemoveBtn = document.querySelector(".cart-summary__items");
+let cartUpdateBtn = document.querySelector(".cart-summary__items");
 let headerCartBtn = document.querySelector(".header__cart");
 let summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
 let summaryCart = document.querySelector(".cart-summary");
@@ -31,13 +33,27 @@ createCart().then((cart) => {
 productsContainer.onclick = addProductsToCart;
 summaryCloseBtn.onclick = closeCartSummary;
 headerCartBtn.onclick = openCartSummary;
-cartSummaryRemoveBtn.onclick = removeItemFromCart;
+cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
+cartUpdateBtn.addEventListener("click", updateCartItem);
+
+function updateCartItem(event) {
+  if (!event.target.closest(".cart-summary__quantity-btn")) return;
+  let dataset = event.target.closest(".cart-summary__quantity-btn").dataset;
+  let currentItem = currentCart.line_items.find(
+    (item) => (item.id = dataset.productid)
+  );
+  updateCart(
+    dataset.productid,
+    dataset.action == "inc"
+      ? currentItem.quantity + 1
+      : currentItem.quantity - 1
+  ).then((res) => updateCartState(res));
+}
 
 function removeItemFromCart(event) {
-  if (!event.target.closest(".summary__item-btn-delete").dataset) return;
+  if (!event.target.closest(".summary__item-btn-delete")) return;
   let productId = event.target.closest(".summary__item-btn-delete").dataset
     .prodictid;
-  console.log(productId);
   removeFromCart(productId).then((res) => {
     updateCartState(res);
   });

@@ -2899,6 +2899,7 @@ exports.getProductsAsync = getProductsAsync;
 exports.createCart = createCart;
 exports.addToCart = addToCart;
 exports.removeFromCart = removeFromCart;
+exports.updateCart = updateCart;
 
 var _commerce = _interopRequireDefault(require("@chec/commerce.js"));
 
@@ -3015,6 +3016,34 @@ function _removeFromCart() {
   }));
   return _removeFromCart.apply(this, arguments);
 }
+
+function updateCart(_x4, _x5) {
+  return _updateCart.apply(this, arguments);
+}
+
+function _updateCart() {
+  _updateCart = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(prodictId, quantity) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.next = 2;
+            return commerce.cart.update(prodictId, {
+              quantity: quantity
+            });
+
+          case 2:
+            return _context5.abrupt("return", _context5.sent);
+
+          case 3:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5);
+  }));
+  return _updateCart.apply(this, arguments);
+}
 },{"@chec/commerce.js":"../../node_modules/@chec/commerce.js/lib/index.js"}],"modules/cardTemplate.js":[function(require,module,exports) {
 "use strict";
 
@@ -3035,7 +3064,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = createCartSummaryCard;
 
 function createCartSummaryCard(item) {
-  return "<div class=\"cart-summary__item\">\n    <div class=\"cart-summary__item-header\">\n      <img\n        src=\"".concat(item.media.source, "\"\n        alt=\"").concat(item.name, " image\"\n      />\n      <h4>").concat(item.name, "</h4>\n    </div>\n    <button class=\"summary__item-btn-delete\" data-prodictId=").concat(item.id, ">\n      <svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path\n          d=\"M22 4v6.47H12v3.236h40V10.47H42V4H22zm3.333 6.47V7.235H38.67v3.235H25.333zm20.001 9.707h3.333V59H15.334V20.177h3.333v35.588h26.667V20.177zm-15 29.116V23.412h3.334v25.881h-3.334z\"\n        ></path>\n      </svg>\n    </button>\n    <div class=\"cart-summary__quantity\">\n      <h5>Quantity</h5>\n      <div class=\"cart-summary__quantity-btns\">\n        <button class=\"cart-summary__quantity-btn dec\" data-productId=").concat(item.id, ">\n          <img src=\"./img/minus.svg\" alt=\"minus icon\" />\n        </button>\n        <span class=\"val\">").concat(item.quantity, "</span>\n        <button class=\"cart-summary__quantity-btn inc\" data-productId=").concat(item.id, ">\n          <img src=\"./img/cross.svg\" alt=\"plus icon\" />\n        </button>\n      </div>\n    </div>\n    <p class=\"cart-summary__item-price\">").concat(item.line_total.formatted_with_symbol, "</p>\n  </div>");
+  return "<div class=\"cart-summary__item\">\n    <div class=\"cart-summary__item-header\">\n      <img\n        src=\"".concat(item.media.source, "\"\n        alt=\"").concat(item.name, " image\"\n      />\n      <h4>").concat(item.name, "</h4>\n    </div>\n    <button class=\"summary__item-btn-delete\" data-prodictId=").concat(item.id, ">\n      <svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path\n          d=\"M22 4v6.47H12v3.236h40V10.47H42V4H22zm3.333 6.47V7.235H38.67v3.235H25.333zm20.001 9.707h3.333V59H15.334V20.177h3.333v35.588h26.667V20.177zm-15 29.116V23.412h3.334v25.881h-3.334z\"\n        ></path>\n      </svg>\n    </button>\n    <div class=\"cart-summary__quantity\">\n      <h5>Quantity</h5>\n      <div class=\"cart-summary__quantity-btns\">\n        <button class=\"cart-summary__quantity-btn\" data-action=\"dec\" data-productId=").concat(item.id, ">\n          <img src=\"./img/minus.svg\" alt=\"minus icon\" />\n        </button>\n        <span class=\"val\">").concat(item.quantity, "</span>\n        <button class=\"cart-summary__quantity-btn\" data-action=\"inc\" data-productId=").concat(item.id, ">\n          <img src=\"./img/cross.svg\" alt=\"plus icon\" />\n        </button>\n      </div>\n    </div>\n    <p class=\"cart-summary__item-price\">").concat(item.line_total.formatted_with_symbol, "</p>\n  </div>");
 }
 },{}],"../../node_modules/animejs/lib/anime.es.js":[function(require,module,exports) {
 "use strict";
@@ -4877,6 +4906,7 @@ var _commonjs = require("./modules/commonjs");
 var _updateUI = require("./modules/updateUI");
 
 var cartSummaryRemoveBtn = document.querySelector(".cart-summary__items");
+var cartUpdateBtn = document.querySelector(".cart-summary__items");
 var headerCartBtn = document.querySelector(".header__cart");
 var summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
 var summaryCart = document.querySelector(".cart-summary");
@@ -4895,12 +4925,23 @@ var currentCart;
 productsContainer.onclick = addProductsToCart;
 summaryCloseBtn.onclick = closeCartSummary;
 headerCartBtn.onclick = openCartSummary;
-cartSummaryRemoveBtn.onclick = removeItemFromCart;
+cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
+cartUpdateBtn.addEventListener("click", updateCartItem);
+
+function updateCartItem(event) {
+  if (!event.target.closest(".cart-summary__quantity-btn")) return;
+  var dataset = event.target.closest(".cart-summary__quantity-btn").dataset;
+  var currentItem = currentCart.line_items.find(function (item) {
+    return item.id = dataset.productid;
+  });
+  (0, _commonjs.updateCart)(dataset.productid, dataset.action == "inc" ? currentItem.quantity + 1 : currentItem.quantity - 1).then(function (res) {
+    return updateCartState(res);
+  });
+}
 
 function removeItemFromCart(event) {
-  if (!event.target.closest(".summary__item-btn-delete").dataset) return;
+  if (!event.target.closest(".summary__item-btn-delete")) return;
   var productId = event.target.closest(".summary__item-btn-delete").dataset.prodictid;
-  console.log(productId);
   (0, _commonjs.removeFromCart)(productId).then(function (res) {
     updateCartState(res);
   });

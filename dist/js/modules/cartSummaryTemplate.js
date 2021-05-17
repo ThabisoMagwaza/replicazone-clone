@@ -17,11 +17,11 @@ export default function createCartSummaryCard(item) {
     <div class="cart-summary__quantity">
       <h5>Quantity</h5>
       <div class="cart-summary__quantity-btns">
-        <button class="cart-summary__quantity-btn dec" data-productId=${item.id}>
+        <button class="cart-summary__quantity-btn" data-action="dec" data-productId=${item.id}>
           <img src="./img/minus.svg" alt="minus icon" />
         </button>
         <span class="val">${item.quantity}</span>
-        <button class="cart-summary__quantity-btn inc" data-productId=${item.id}>
+        <button class="cart-summary__quantity-btn" data-action="inc" data-productId=${item.id}>
           <img src="./img/cross.svg" alt="plus icon" />
         </button>
       </div>
