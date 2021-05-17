@@ -17,3 +17,7 @@ export async function createCart() {
 export async function addToCart(productId, quantity) {
   return await commerce.cart.add(productId, quantity);
 }
+
+export async function removeFromCart(productId) {
+  return await commerce.cart.remove(productId);
+}

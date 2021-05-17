@@ -1,10 +1,16 @@
-import { getProductsAsync, createCart, addToCart } from "./modules/commonjs";
+import {
+  getProductsAsync,
+  createCart,
+  addToCart,
+  removeFromCart,
+} from "./modules/commonjs";
 import {
   updateProductsUI,
   updateCartPriceUI,
   updateCartSummaryUI,
 } from "./modules/updateUI";
 
+let cartSummaryRemoveBtn = document.querySelector(".cart-summary__items");
 let headerCartBtn = document.querySelector(".header__cart");
 let summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
 let summaryCart = document.querySelector(".cart-summary");
@@ -19,14 +25,23 @@ getProductsAsync().then((products) => {
 
 createCart().then((cart) => {
   currentCart = cart;
-  console.log(cart);
   updateCartPriceUI(cart.subtotal.formatted);
 });
 
-productsContainer.addEventListener("click", addProductsToCart);
-
+productsContainer.onclick = addProductsToCart;
 summaryCloseBtn.onclick = closeCartSummary;
 headerCartBtn.onclick = openCartSummary;
+cartSummaryRemoveBtn.onclick = removeItemFromCart;
+
+function removeItemFromCart(event) {
+  if (!event.target.closest(".summary__item-btn-delete").dataset) return;
+  let productId = event.target.closest(".summary__item-btn-delete").dataset
+    .prodictid;
+  console.log(productId);
+  removeFromCart(productId).then((res) => {
+    updateCartState(res);
+  });
+}
 
 function addProductsToCart(event) {
   if (!event.target.classList.contains("card__btn")) return;
@@ -34,8 +49,7 @@ function addProductsToCart(event) {
   let productId = event.target.dataset.productid;
   let quantity = document.querySelector(`.${productId}`).value;
   addToCart(productId, quantity).then((res) => {
-    currentCart = res.cart;
-    updateCartSummaryUI(currentCart.line_items);
+    updateCartState(res);
   });
 }
 
@@ -47,4 +61,9 @@ function closeCartSummary() {
 function openCartSummary() {
   updateCartSummaryUI(currentCart.line_items);
   summaryCart.classList.remove("cart-summary--hidden");
+}
+
+function updateCartState(res) {
+  currentCart = res.cart;
+  updateCartSummaryUI(currentCart.line_items);
 }

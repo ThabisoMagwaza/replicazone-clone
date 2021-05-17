@@ -41,7 +41,7 @@ button {
     top: 0;
     right: 0;
     width: 35vw;
-    height: 100vh;
+    min-height: 100vh;
 
     display: grid;
     grid-template-rows: min-content;
@@ -67,7 +67,6 @@ button {
     padding: 3rem;
     display: grid;
     grid-row-gap: 2rem;
-
 }
 
 .cart-summary__item {
