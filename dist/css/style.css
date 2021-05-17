@@ -34,8 +34,10 @@ body {
 }
 
 .container {
-    min-height: 70vh;
+    min-height: 84vh;
     position: relative;
+
+    transform: translateY(10rem);
 }
 
 .header__content {
@@ -45,7 +47,16 @@ body {
 
 .header {
     padding: 2.5rem;
-    border-bottom: solid 1px #ddd;
+    /* border-bottom: solid 1px #ddd; */
+    box-shadow: 0 0 1.5rem rgba(0, 0, 0, .1);
+    background-color: #fff;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    z-index: 100;
 }
 
 .header__logo {
