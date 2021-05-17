@@ -1,4 +1,5 @@
 import createCard from "./cardTemplate";
+import createCartSummaryCard from "./cartSummaryTemplate";
 import anime from "animejs/lib/anime.es.js";
 
 let cardsContainer = document.querySelector(".container");
@@ -36,4 +37,12 @@ export function updateCartPriceUI(price) {
       cartPriceUI.innerHTML = priceObj.value;
     },
   });
+}
+
+export function updateCartSummaryUI(lineItems) {
+  debugger;
+  let cartSummaryStrings = lineItems.map((item) => createCartSummaryCard(item));
+  document
+    .querySelector(".cart-summary__items")
+    .insertAdjacentHTML("afterbegin", cartSummaryStrings.join("\n"));
 }

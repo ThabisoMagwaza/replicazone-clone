@@ -2999,6 +2999,18 @@ exports.default = makeCard;
 function makeCard(product, isCardLeft) {
   return "<div class=\"card ".concat(isCardLeft ? "card--left" : "", "\">\n  <h2 class=\"card__heading\">").concat(product.name, "</h2>\n  <p class=\"card__description\">").concat(product.description.replace(new RegExp("</?p>", "g"), ""), "</p>\n  <div class=\"card__purchase-block\">\n    <div class=\"card__input-group card__input-group--quantity\">\n      <label for=\"quantity\" class=\"card__label\">Quantity</label>\n      <input\n        type=\"number\"\n        name=\"quantity\"\n        id=\"quantity\"\n        class=\"card__input ").concat(product.id, "\"\n        value=\"1\"\n        max=\"").concat(product.inventory.available, "\"\n      />\n    </div>\n    <div class=\"card__input-group\">\n      <label for=\"format\" class=\"card__label\">Format</label>\n      <select name=\"format\" id=\"format\" class=\"card__input\">\n        <option value=\"physical\" selected>Physical Copy</option>\n        <option value=\"digital\">Digital Copy (.jpg)</option>\n      </select>\n    </div>\n\n    <p class=\"card__price\">").concat(product.price.formatted_with_symbol, "</p>\n    <button class=\"card__btn\" data-productId=\"").concat(product.id, "\">Add to cart</button>\n  </div>\n  <div class=\"card__image-box ").concat(isCardLeft ? "card__image-box--left" : "", "\">\n    <img\n      src=\"").concat(product.media.source, "\"\n      alt=\"High-quality replica of The Starry Night\"\n      class=\"card__image  ").concat(isCardLeft ? "card__image--left" : "", "\"\n    />\n  </div>\n</div>");
 }
+},{}],"modules/cartSummaryTemplate.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = createCartSummaryCard;
+
+function createCartSummaryCard(item) {
+  debugger;
+  return "<div class=\"cart-summary__item\">\n    <div class=\"cart-summary__item-header\">\n      <img\n        src=\"".concat(item.media.source, "\"\n        alt=\"").concat(item.name, " image\"\n      />\n      <h4>").concat(item.name, "</h4>\n    </div>\n    <button class=\"summary__item-btn-delete\">\n      <svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path\n          d=\"M22 4v6.47H12v3.236h40V10.47H42V4H22zm3.333 6.47V7.235H38.67v3.235H25.333zm20.001 9.707h3.333V59H15.334V20.177h3.333v35.588h26.667V20.177zm-15 29.116V23.412h3.334v25.881h-3.334z\"\n        ></path>\n      </svg>\n    </button>\n    <div class=\"cart-summary__quantity\">\n      <h5>Quantity</h5>\n      <div class=\"cart-summary__quantity-btns\">\n        <button class=\"cart-summary__quantity-btn dec\" data-productId=").concat(item.id, ">\n          <img src=\"./img/minus.svg\" alt=\"minus icon\" />\n        </button>\n        <span class=\"val\">").concat(item.quantity, "</span>\n        <button class=\"cart-summary__quantity-btn inc\" data-productId=").concat(item.id, ">\n          <img src=\"./img/cross.svg\" alt=\"plus icon\" />\n        </button>\n      </div>\n    </div>\n    <p class=\"cart-summary__item-price\">").concat(line_total.formatted_with_symbol, "</p>\n  </div>");
+}
 },{}],"../../node_modules/animejs/lib/anime.es.js":[function(require,module,exports) {
 "use strict";
 
@@ -4774,8 +4786,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.updateProductsUI = updateProductsUI;
 exports.updateCartPriceUI = updateCartPriceUI;
+exports.updateCartSummaryUI = updateCartSummaryUI;
 
 var _cardTemplate = _interopRequireDefault(require("./cardTemplate"));
+
+var _cartSummaryTemplate = _interopRequireDefault(require("./cartSummaryTemplate"));
 
 var _animeEs = _interopRequireDefault(require("animejs/lib/anime.es.js"));
 
@@ -4819,13 +4834,24 @@ function updateCartPriceUI(price) {
     }
   });
 }
-},{"./cardTemplate":"modules/cardTemplate.js","animejs/lib/anime.es.js":"../../node_modules/animejs/lib/anime.es.js"}],"index.js":[function(require,module,exports) {
+
+function updateCartSummaryUI(lineItems) {
+  debugger;
+  var cartSummaryStrings = lineItems.map(function (item) {
+    return (0, _cartSummaryTemplate.default)(item);
+  });
+  document.querySelector(".cart-summary__items").insertAdjacentHTML("afterbegin", cartSummaryStrings.join("\n"));
+}
+},{"./cardTemplate":"modules/cardTemplate.js","./cartSummaryTemplate":"modules/cartSummaryTemplate.js","animejs/lib/anime.es.js":"../../node_modules/animejs/lib/anime.es.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _commonjs = require("./modules/commonjs");
 
 var _updateUI = require("./modules/updateUI");
 
+var headerCartBtn = document.querySelector(".header__cart");
+var summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
+var summaryCart = document.querySelector(".cart-summary");
 var productsContainer = document.querySelector(".container");
 var allProducts = [];
 var currentCart;
@@ -4836,18 +4862,31 @@ var currentCart;
 });
 (0, _commonjs.createCart)().then(function (cart) {
   currentCart = cart;
+  console.log(cart);
   (0, _updateUI.updateCartPriceUI)(cart.subtotal.formatted);
 });
 productsContainer.addEventListener("click", addProductsToCart);
+summaryCloseBtn.onclick = closeCartSummary;
+headerCartBtn.onclick = openCartSummary;
 
 function addProductsToCart(event) {
   if (!event.target.classList.contains("card__btn")) return;
+  openCartSummary();
   var productId = event.target.dataset.productid;
   var quantity = document.querySelector(".".concat(productId)).value;
   (0, _commonjs.addToCart)(productId, quantity).then(function (res) {
     currentCart = res.cart;
-    (0, _updateUI.updateCartPriceUI)(res.cart.subtotal.formatted);
+    (0, _updateUI.updateCartSummaryUI)(currentCart.line_items);
   });
+}
+
+function closeCartSummary() {
+  (0, _updateUI.updateCartPriceUI)(currentCart.subtotal.formatted);
+  summaryCart.classList.add("cart-summary--hidden");
+}
+
+function openCartSummary() {
+  summaryCart.classList.remove("cart-summary--hidden");
 }
 },{"./modules/commonjs":"modules/commonjs.js","./modules/updateUI":"modules/updateUI.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
