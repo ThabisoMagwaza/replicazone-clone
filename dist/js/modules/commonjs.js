@@ -9,3 +9,11 @@ const commerce = new Commerce(`${public_api_key}`);
 export async function getProductsAsync() {
   return await commerce.products.list();
 }
+
+export async function createCart() {
+  return await commerce.cart.retrieve();
+}
+
+export async function addToCart(productId, quantity) {
+  return await commerce.cart.add(productId, quantity);
+}

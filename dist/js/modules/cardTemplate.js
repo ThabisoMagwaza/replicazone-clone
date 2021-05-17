@@ -12,7 +12,7 @@ export default function makeCard(product, isCardLeft) {
         type="number"
         name="quantity"
         id="quantity"
-        class="card__input"
+        class="card__input ${product.id}"
         value="1"
         max="${product.inventory.available}"
       />

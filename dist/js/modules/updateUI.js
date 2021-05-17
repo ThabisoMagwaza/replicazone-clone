@@ -3,6 +3,7 @@ import anime from "animejs/lib/anime.es.js";
 
 let cardsContainer = document.querySelector(".container");
 let loader = document.querySelector(".loader");
+let cartPriceUI = document.querySelector(".header__value");
 
 export function updateProductsUI(products) {
   let altenator = 0;
@@ -21,5 +22,18 @@ export function updateProductsUI(products) {
     duration: 2000,
     easing: "easeOutExpo",
     delay: anime.stagger(300),
+  });
+}
+
+export function updateCartPriceUI(price) {
+  let priceObj = { value: 0 };
+  anime({
+    targets: priceObj,
+    value: price,
+    round: 100,
+    easing: "easeInOutExpo",
+    update: function () {
+      cartPriceUI.innerHTML = priceObj.value;
+    },
   });
 }

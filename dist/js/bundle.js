@@ -2896,6 +2896,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getProductsAsync = getProductsAsync;
+exports.createCart = createCart;
+exports.addToCart = addToCart;
 
 var _commerce = _interopRequireDefault(require("@chec/commerce.js"));
 
@@ -2934,6 +2936,58 @@ function _getProductsAsync() {
   }));
   return _getProductsAsync.apply(this, arguments);
 }
+
+function createCart() {
+  return _createCart.apply(this, arguments);
+}
+
+function _createCart() {
+  _createCart = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return commerce.cart.retrieve();
+
+          case 2:
+            return _context2.abrupt("return", _context2.sent);
+
+          case 3:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _createCart.apply(this, arguments);
+}
+
+function addToCart(_x, _x2) {
+  return _addToCart.apply(this, arguments);
+}
+
+function _addToCart() {
+  _addToCart = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(productId, quantity) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return commerce.cart.add(productId, quantity);
+
+          case 2:
+            return _context3.abrupt("return", _context3.sent);
+
+          case 3:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _addToCart.apply(this, arguments);
+}
 },{"@chec/commerce.js":"../../node_modules/@chec/commerce.js/lib/index.js"}],"modules/cardTemplate.js":[function(require,module,exports) {
 "use strict";
 
@@ -2943,7 +2997,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = makeCard;
 
 function makeCard(product, isCardLeft) {
-  return "<div class=\"card ".concat(isCardLeft ? "card--left" : "", "\">\n  <h2 class=\"card__heading\">").concat(product.name, "</h2>\n  <p class=\"card__description\">").concat(product.description.replace(new RegExp("</?p>", "g"), ""), "</p>\n  <div class=\"card__purchase-block\">\n    <div class=\"card__input-group card__input-group--quantity\">\n      <label for=\"quantity\" class=\"card__label\">Quantity</label>\n      <input\n        type=\"number\"\n        name=\"quantity\"\n        id=\"quantity\"\n        class=\"card__input\"\n        value=\"1\"\n        max=\"").concat(product.inventory.available, "\"\n      />\n    </div>\n    <div class=\"card__input-group\">\n      <label for=\"format\" class=\"card__label\">Format</label>\n      <select name=\"format\" id=\"format\" class=\"card__input\">\n        <option value=\"physical\" selected>Physical Copy</option>\n        <option value=\"digital\">Digital Copy (.jpg)</option>\n      </select>\n    </div>\n\n    <p class=\"card__price\">").concat(product.price.formatted_with_symbol, "</p>\n    <button class=\"card__btn\" data-productId=\"").concat(product.id, "\">Add to cart</button>\n  </div>\n  <div class=\"card__image-box ").concat(isCardLeft ? "card__image-box--left" : "", "\">\n    <img\n      src=\"").concat(product.media.source, "\"\n      alt=\"High-quality replica of The Starry Night\"\n      class=\"card__image  ").concat(isCardLeft ? "card__image--left" : "", "\"\n    />\n  </div>\n</div>");
+  return "<div class=\"card ".concat(isCardLeft ? "card--left" : "", "\">\n  <h2 class=\"card__heading\">").concat(product.name, "</h2>\n  <p class=\"card__description\">").concat(product.description.replace(new RegExp("</?p>", "g"), ""), "</p>\n  <div class=\"card__purchase-block\">\n    <div class=\"card__input-group card__input-group--quantity\">\n      <label for=\"quantity\" class=\"card__label\">Quantity</label>\n      <input\n        type=\"number\"\n        name=\"quantity\"\n        id=\"quantity\"\n        class=\"card__input ").concat(product.id, "\"\n        value=\"1\"\n        max=\"").concat(product.inventory.available, "\"\n      />\n    </div>\n    <div class=\"card__input-group\">\n      <label for=\"format\" class=\"card__label\">Format</label>\n      <select name=\"format\" id=\"format\" class=\"card__input\">\n        <option value=\"physical\" selected>Physical Copy</option>\n        <option value=\"digital\">Digital Copy (.jpg)</option>\n      </select>\n    </div>\n\n    <p class=\"card__price\">").concat(product.price.formatted_with_symbol, "</p>\n    <button class=\"card__btn\" data-productId=\"").concat(product.id, "\">Add to cart</button>\n  </div>\n  <div class=\"card__image-box ").concat(isCardLeft ? "card__image-box--left" : "", "\">\n    <img\n      src=\"").concat(product.media.source, "\"\n      alt=\"High-quality replica of The Starry Night\"\n      class=\"card__image  ").concat(isCardLeft ? "card__image--left" : "", "\"\n    />\n  </div>\n</div>");
 }
 },{}],"../../node_modules/animejs/lib/anime.es.js":[function(require,module,exports) {
 "use strict";
@@ -4719,6 +4773,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.updateProductsUI = updateProductsUI;
+exports.updateCartPriceUI = updateCartPriceUI;
 
 var _cardTemplate = _interopRequireDefault(require("./cardTemplate"));
 
@@ -4728,6 +4783,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var cardsContainer = document.querySelector(".container");
 var loader = document.querySelector(".loader");
+var cartPriceUI = document.querySelector(".header__value");
 
 function updateProductsUI(products) {
   var altenator = 0;
@@ -4748,6 +4804,21 @@ function updateProductsUI(products) {
     delay: _animeEs.default.stagger(300)
   });
 }
+
+function updateCartPriceUI(price) {
+  var priceObj = {
+    value: 0
+  };
+  (0, _animeEs.default)({
+    targets: priceObj,
+    value: price,
+    round: 100,
+    easing: "easeInOutExpo",
+    update: function update() {
+      cartPriceUI.innerHTML = priceObj.value;
+    }
+  });
+}
 },{"./cardTemplate":"modules/cardTemplate.js","animejs/lib/anime.es.js":"../../node_modules/animejs/lib/anime.es.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -4755,12 +4826,29 @@ var _commonjs = require("./modules/commonjs");
 
 var _updateUI = require("./modules/updateUI");
 
+var productsContainer = document.querySelector(".container");
 var allProducts = [];
+var currentCart;
 (0, _commonjs.getProductsAsync)().then(function (products) {
   allProducts = products; //cache products
 
   (0, _updateUI.updateProductsUI)(products);
 });
+(0, _commonjs.createCart)().then(function (cart) {
+  currentCart = cart;
+  (0, _updateUI.updateCartPriceUI)(cart.subtotal.formatted);
+});
+productsContainer.addEventListener("click", addProductsToCart);
+
+function addProductsToCart(event) {
+  if (!event.target.classList.contains("card__btn")) return;
+  var productId = event.target.dataset.productid;
+  var quantity = document.querySelector(".".concat(productId)).value;
+  (0, _commonjs.addToCart)(productId, quantity).then(function (res) {
+    currentCart = res.cart;
+    (0, _updateUI.updateCartPriceUI)(res.cart.subtotal.formatted);
+  });
+}
 },{"./modules/commonjs":"modules/commonjs.js","./modules/updateUI":"modules/updateUI.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
