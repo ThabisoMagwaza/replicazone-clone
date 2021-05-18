@@ -7,10 +7,8 @@
     <title>Replica Zone - Demo online store</title>
     <link rel="shortcut icon" href="./img/logo.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
@@ -19,7 +17,33 @@
         <button class="checkout__btn-back"><svg><use xlink:href="./img/arrow.svg#arrow" /></svg> Continue shopping</button>
         <div class="checkout__left">
           <form class="checkout__form checkout__form--billing">
-            
+            <h6 class="checkout__heading">Billing</h6>
+            <div class="checkout__form-group checkout__fullname">
+              <label for="#fullname">Full name</label>
+              <input type="text" id="fullname" name="fullname" required>
+            </div>
+            <div class="checkout__form-group checkout__email">
+              <label for="#email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="checkout__form-group checkout__province">
+              <label for="#province">Province</label>
+              <input type="text" id="province" name="province">
+            </div>
+            <div class="checkout__form-group checkout__city">
+              <label for="#city">City</label>
+              <input type="text" id="city" name="city">
+            </div>
+            <div class="checkout__form-group checkout__street">
+              <label for="#street">Street address</label>
+              <input type="text" id="street" name="street" >
+            </div>
+            <div class="checkout__form-group checkout__zipcode">
+              <label for="#zipcode">Postal/ZIP code</label>
+              <input type="text" id="zipcode" name="zipcode">
+            </div>
+
+            <button type="submit" class="btn-cta mt-small">Continue to shipping</button>
           </form>
         </div>
         <div class="checkout__right">
@@ -46,7 +70,7 @@
         <div class="cart-summary__total">
           Total <span class="cart-summary__value"></span>
         </div>
-        <button class="btn btn-checkout">Checkout <svg class="btn-checkout__icon"><use xlink:href="./img/arrow.svg#arrow"></svg></button>
+        <button class="btn btn-cta btn-checkout">Checkout <svg class="btn-cta__icon"><use xlink:href="./img/arrow.svg#arrow"></svg></button>
         <button class="btn btn-detailed-cart">View detailed cart</button>
       </div>
     </div>
