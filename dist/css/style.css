@@ -1,8 +1,12 @@
 /* --------------------- CUSTOM PROPERTIES ------------------------- */
 :root {
+    --color-secondary: #0aa7f5;
     --color-logo: #429bfc;
     --color-gray-light: #f7f7f8;
     --color-danger: #9e2215;
+    --color-onBlue: #d9f0fc;
+    --color-blue: #0d59f2;
+    --color-modal-background: #f1f2f4;
 }
 
 
@@ -33,6 +37,83 @@ button {
     cursor: pointer;
 }
 
+/* --------------------- CHECKOUT ------------------------- */
+
+.checkout {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100vw;
+    z-index: 300;
+    overflow-y: scroll;
+    background-color: var(--color-modal-background);
+
+    transition: all .5s ease-in;
+}
+
+.checkout--hidden {
+    transform: translateX(100%);
+    visibility: hidden;
+}
+
+/* .checkout ~ * {
+    display: none;
+} */
+
+.hidden {
+    display: none;
+}
+
+.checkout__container {
+    width: 80vw;
+    margin: 0 auto;
+
+    display: grid;
+    grid-column-gap: 5rem;
+    justify-content: space-around;
+    grid-template-columns: min-content;
+    grid-template-columns: repeat(2,1fr);
+}
+
+.checkout__btn-back {
+    margin: 2rem 0;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+
+    font-size: 1.6rem;
+    font-family: inherit;
+
+    background-color: var(--color-modal-background);
+}
+
+.checkout__btn-back:hover svg{
+    transform: translateX(-.5rem);
+}
+
+.checkout__btn-back svg{
+    width: 2rem;
+    height: 2rem;
+    margin-right: 1rem;
+
+    transition: transform .2s;
+}
+
+.checkout__form {
+    /* height: calc(100vh * 2); */
+    /* background-color: orangered; */
+}
+
+.checkout__summary {
+    width: 40vw;
+    height: 50rem;
+    background-color: blueviolet;
+    position: fixed;
+}
+.checkout__left {
+    grid-column: 1;
+}
+
 /* --------------------- CART SUMMARY ------------------------- */
 .cart-summary {
     z-index: 200;
@@ -52,6 +133,7 @@ button {
 }
 
 .cart-summary--hidden {
+    display: hidden;
     transform: translateX(100%);
 }
 
@@ -138,6 +220,10 @@ button {
     box-shadow:0 .1rem .1rem rgba(0, 0, 0, .1)
 }
 
+.cart-summary__quantity-btn:active {
+    background-color: #a9e4ff;
+}
+
 .cart-summary__quantity-btn img {
     display: block;
     width: 1.5rem;
@@ -208,6 +294,10 @@ button {
     border-radius: 5px;
     letter-spacing: 2px;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     margin-bottom: 2rem;
 
     transition: all .2s;
@@ -216,6 +306,18 @@ button {
 .btn-checkout:hover {
     background-color: #0d59f2;
     box-shadow: 0 10px 4px -8px rgba(0,0,0,.5);
+    transform: translateY(-3px);
+}
+
+.btn-checkout__icon {
+    width: 2rem;
+    height: 2rem;
+    transform: rotate(180deg) translateX(-2rem);
+    transition: transform .2s;
+}
+
+.btn-checkout:hover .btn-checkout__icon {
+    transform: rotate(180deg) translate(-2.5rem);
 }
 
 /* --------------------- Header ------------------------- */

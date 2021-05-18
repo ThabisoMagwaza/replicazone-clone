@@ -2900,6 +2900,8 @@ exports.createCart = createCart;
 exports.addToCart = addToCart;
 exports.removeFromCart = removeFromCart;
 exports.updateCart = updateCart;
+exports.generateCheckoutToken = generateCheckoutToken;
+exports.captureOder = captureOder;
 
 var _commerce = _interopRequireDefault(require("@chec/commerce.js"));
 
@@ -2909,7 +2911,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var public_api_key = "pk_test_273072b92c2d1f1cb13ff4cd03ec581e32aea9bd47ebb"; // Create a Commerce instance
+// const public_api_key = "pk_test_273072b92c2d1f1cb13ff4cd03ec581e32aea9bd47ebb";
+var public_api_key = "pk_27307555d22166c861d7e37f8188fb8debfd30bf2453f"; // Create a Commerce instance
 
 var commerce = new _commerce.default("".concat(public_api_key));
 
@@ -3043,6 +3046,58 @@ function _updateCart() {
     }, _callee5);
   }));
   return _updateCart.apply(this, arguments);
+}
+
+function generateCheckoutToken(_x6) {
+  return _generateCheckoutToken.apply(this, arguments);
+}
+
+function _generateCheckoutToken() {
+  _generateCheckoutToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(cart_id) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.next = 2;
+            return commerce.checkout.generateTokenFrom("cart", cart_id);
+
+          case 2:
+            return _context6.abrupt("return", _context6.sent);
+
+          case 3:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }));
+  return _generateCheckoutToken.apply(this, arguments);
+}
+
+function captureOder(_x7, _x8) {
+  return _captureOder.apply(this, arguments);
+}
+
+function _captureOder() {
+  _captureOder = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(token, checkoutObj) {
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.next = 2;
+            return commerce.checkout.capture(token, checkoutObj);
+
+          case 2:
+            return _context7.abrupt("return", _context7.sent);
+
+          case 3:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }));
+  return _captureOder.apply(this, arguments);
 }
 },{"@chec/commerce.js":"../../node_modules/@chec/commerce.js/lib/index.js"}],"modules/cardTemplate.js":[function(require,module,exports) {
 "use strict";
@@ -4907,12 +4962,20 @@ var _commonjs = require("./modules/commonjs");
 
 var _updateUI = require("./modules/updateUI");
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var checkoutPage = document.querySelector(".checkout");
+var checkoutBackBtn = document.querySelector(".checkout__btn-back");
+var checkoutBtn = document.querySelector(".btn-checkout");
 var cartSummaryRemoveBtn = document.querySelector(".cart-summary__items");
 var cartUpdateBtn = document.querySelector(".cart-summary__items");
 var headerCartBtn = document.querySelector(".header__cart");
 var summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
 var summaryCart = document.querySelector(".cart-summary");
 var productsContainer = document.querySelector(".container");
+var shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 var allProducts = [];
 var currentCart;
 (0, _commonjs.getProductsAsync)().then(function (products) {
@@ -4929,6 +4992,93 @@ summaryCloseBtn.onclick = closeCartSummary;
 headerCartBtn.onclick = openCartSummary;
 cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
 cartUpdateBtn.addEventListener("click", updateCartItem);
+checkoutBtn.onclick = showCheckoutPage;
+checkoutBackBtn.onclick = showShopping;
+
+function showShopping() {
+  shoppingPageElements.forEach(function (el) {
+    return el.classList.remove("hidden");
+  });
+  checkoutPage.classList.add("checkout--hidden");
+  closeCartSummary();
+}
+
+function showCheckoutPage() {
+  checkoutPage.classList.remove("checkout--hidden");
+  shoppingPageElements.forEach(function (el) {
+    return el.classList.add("hidden");
+  });
+}
+
+function checkout() {
+  return _checkout.apply(this, arguments);
+}
+
+function _checkout() {
+  _checkout = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var checkout, gatewayPaymentId, items, orderOptions, order;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return (0, _commonjs.generateCheckoutToken)(currentCart.id);
+
+          case 2:
+            checkout = _context.sent;
+            gatewayPaymentId = checkout.gateways.manual[0].id;
+            items = currentCart.line_items.reduce(function (acc, item) {
+              acc[item.id] = {
+                quantity: item.quantity
+              };
+              return acc;
+            }, {});
+            orderOptions = {
+              line_items: items,
+              customer: {
+                firstname: "John",
+                lastname: "Doe",
+                email: "john.doe@example.com"
+              },
+              shipping: {
+                name: "John Doe",
+                street: "123 Fake St",
+                town_city: "San Francisco",
+                county_state: "US-CA",
+                postal_zip_code: "94103",
+                country: "US"
+              },
+              billing: {
+                name: "John Doe",
+                street: "234 Fake St",
+                town_city: "San Francisco",
+                county_state: "US-CA",
+                postal_zip_code: "94103",
+                country: "US"
+              },
+              payment: {
+                gateway: "manual",
+                manual: {
+                  id: gatewayPaymentId
+                }
+              }
+            };
+            _context.next = 8;
+            return (0, _commonjs.captureOder)(checkout.id, orderOptions);
+
+          case 8:
+            order = _context.sent;
+            console.log(order);
+
+          case 10:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _checkout.apply(this, arguments);
+}
 
 function updateCartItem(event) {
   if (!event.target.closest(".cart-summary__quantity-btn")) return;
@@ -5001,7 +5151,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60294" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53386" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

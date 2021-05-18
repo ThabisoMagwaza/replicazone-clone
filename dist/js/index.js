@@ -4,6 +4,8 @@ import {
   addToCart,
   removeFromCart,
   updateCart,
+  generateCheckoutToken,
+  captureOder,
 } from "./modules/commonjs";
 import {
   updateProductsUI,
@@ -11,12 +13,17 @@ import {
   updateCartSummaryUI,
 } from "./modules/updateUI";
 
+let checkoutPage = document.querySelector(".checkout");
+let checkoutBackBtn = document.querySelector(".checkout__btn-back");
+let checkoutBtn = document.querySelector(".btn-checkout");
 let cartSummaryRemoveBtn = document.querySelector(".cart-summary__items");
 let cartUpdateBtn = document.querySelector(".cart-summary__items");
 let headerCartBtn = document.querySelector(".header__cart");
 let summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
 let summaryCart = document.querySelector(".cart-summary");
 let productsContainer = document.querySelector(".container");
+let shoppingPageElements = document.querySelectorAll(".checkout ~ *");
+
 let allProducts = [];
 let currentCart;
 
@@ -35,6 +42,63 @@ summaryCloseBtn.onclick = closeCartSummary;
 headerCartBtn.onclick = openCartSummary;
 cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
 cartUpdateBtn.addEventListener("click", updateCartItem);
+checkoutBtn.onclick = showCheckoutPage;
+checkoutBackBtn.onclick = showShopping;
+
+function showShopping() {
+  shoppingPageElements.forEach((el) => el.classList.remove("hidden"));
+  checkoutPage.classList.add("checkout--hidden");
+  closeCartSummary();
+}
+
+function showCheckoutPage() {
+  checkoutPage.classList.remove("checkout--hidden");
+  shoppingPageElements.forEach((el) => el.classList.add("hidden"));
+}
+
+async function checkout() {
+  let checkout = await generateCheckoutToken(currentCart.id);
+  let gatewayPaymentId = checkout.gateways.manual[0].id;
+  let items = currentCart.line_items.reduce((acc, item) => {
+    acc[item.id] = {
+      quantity: item.quantity,
+    };
+    return acc;
+  }, {});
+  let orderOptions = {
+    line_items: items,
+    customer: {
+      firstname: "John",
+      lastname: "Doe",
+      email: "john.doe@example.com",
+    },
+    shipping: {
+      name: "John Doe",
+      street: "123 Fake St",
+      town_city: "San Francisco",
+      county_state: "US-CA",
+      postal_zip_code: "94103",
+      country: "US",
+    },
+    billing: {
+      name: "John Doe",
+      street: "234 Fake St",
+      town_city: "San Francisco",
+      county_state: "US-CA",
+      postal_zip_code: "94103",
+      country: "US",
+    },
+    payment: {
+      gateway: "manual",
+      manual: {
+        id: gatewayPaymentId,
+      },
+    },
+  };
+
+  let order = await captureOder(checkout.id, orderOptions);
+  console.log(order);
+}
 
 function updateCartItem(event) {
   if (!event.target.closest(".cart-summary__quantity-btn")) return;
