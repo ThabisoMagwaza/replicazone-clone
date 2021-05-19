@@ -4968,11 +4968,18 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var billingEdit = document.querySelector(".billing-summary__btn-edit");
-var billingSummary = document.querySelector(".billing-summary");
+var btnPayment = document.querySelector(".btn-complete-payment");
+var useShipping = document.querySelector("#useshipping");
+var nextStepPayment = document.querySelector(".step-next--payment");
+var nextStepShipping = document.querySelector(".step-next--shipping");
+var billingEdit = document.querySelector(".summary__btn-edit--billing");
+var shippingEdit = document.querySelector(".summary__btn-edit--shipping");
+var billingSummary = document.querySelector(".summary--billing");
+var shippingSummary = document.querySelector(".summary--shipping");
 var billingForm = document.querySelector(".checkout__form--billing");
-var checkoutBtnText = document.querySelector(".checkout__form button span");
-var checkoutSpinner = document.querySelector(".checkout__form .spinner");
+var shippingForm = document.querySelector(".checkout__form--shipping");
+var checkoutBtnText = document.querySelector(".btn-complete-payment span");
+var checkoutSpinner = document.querySelector(".btn-complete-payment .spinner");
 var checkoutPage = document.querySelector(".checkout");
 var checkoutBackBtn = document.querySelector(".checkout__btn-back");
 var checkoutBtn = document.querySelector(".btn-checkout");
@@ -5039,7 +5046,32 @@ var billingObj = function (fullname, email, street, city) {
     }
 
   };
-}(document.querySelector(".billing-summary__person .name"), document.querySelector(".billing-summary__person .email"), document.querySelector(".billing-summary__address .street"), document.querySelector(".billing-summary__address .city"));
+}(document.querySelector(".summary--billing .name"), document.querySelector(".summary--billing .email"), document.querySelector(".summary--billing .street"), document.querySelector(".summary--billing .city"));
+
+var shippingObj = function (street, city) {
+  var _street, _city;
+
+  return {
+    set street(v) {
+      _street = v;
+      street.textContent = v;
+    },
+
+    get street() {
+      return _street;
+    },
+
+    set city(v) {
+      _city = v;
+      city.textContent = v;
+    },
+
+    get city() {
+      return _city;
+    }
+
+  };
+}(document.querySelector(".summary--shipping .street"), document.querySelector(".summary--shipping .city"));
 
 (0, _commonjs.getProductsAsync)().then(function (products) {
   allProducts = products; //cache products
@@ -5050,6 +5082,7 @@ var billingObj = function (fullname, email, street, city) {
   currentCart = cart;
   (0, _updateUI.updateCartPriceUI)(cart.subtotal.formatted);
 });
+if (btnPayment) btnPayment.onclick = checkout;
 if (productsContainer) productsContainer.onclick = addProductsToCart;
 if (summaryCloseBtn) summaryCloseBtn.onclick = closeCartSummary;
 if (headerCartBtn) headerCartBtn.onclick = openCartSummary;
@@ -5057,27 +5090,50 @@ if (cartSummaryRemoveBtn) cartSummaryRemoveBtn.addEventListener("click", removeI
 if (cartUpdateBtn) cartUpdateBtn.addEventListener("click", updateCartItem);
 if (checkoutBtn) checkoutBtn.onclick = handleCheckout;
 if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping;
-if (billingForm) addEventListener("submit", submitBilling);
-if (billingEdit) billingEdit.onclick = toggleBillingSummaryVisble;
+if (billingForm) billingForm.addEventListener("submit", submitBilling);
+if (billingEdit) billingEdit.addEventListener("click", function () {
+  toggleVisble(billingSummary, billingForm, nextStepShipping, shippingSummary);
+  nextStepPayment.classList.remove("hidden");
+  btnPayment.classList.add("hidden");
+});
+if (shippingEdit) shippingEdit.addEventListener("click", function () {
+  toggleVisble(shippingSummary, shippingForm);
+  nextStepPayment.classList.remove("hidden");
+  btnPayment.classList.add("hidden");
+});
+if (shippingForm) shippingForm.onsubmit = submitShipping;
+
+function submitShipping(event) {
+  event.preventDefault();
+  updateFormObject(shippingObj, shippingForm);
+  toggleVisble(shippingSummary, shippingForm, nextStepPayment, btnPayment);
+}
 
 function submitBilling(event) {
   event.preventDefault();
-  updateBillingSummary();
-  toggleBillingSummaryVisble();
+  updateFormObject(billingObj, billingForm, "billing");
+  if (!useShipping.checked) return toggleVisble(billingSummary, billingForm, nextStepShipping, shippingForm);
+  updateFormObject(shippingObj, billingForm);
+  toggleVisble(billingForm, billingSummary, nextStepShipping, shippingSummary, nextStepPayment, btnPayment);
 }
 
-function updateBillingSummary() {
-  billingObj.fullname = billingForm.elements.fullname.value;
-  billingObj.email = billingForm.elements.email.value;
-  billingObj.street = billingForm.elements.street.value;
-  var province = billingForm.elements.province.value ? ", ".concat(billingForm.elements.province.value) : "";
-  var zipcode = billingForm.elements.zipcode.value ? ", ".concat(billingForm.elements.zipcode.value) : "";
-  billingObj.city = "".concat(billingForm.elements.city.value).concat(province).concat(zipcode);
+function updateFormObject(object, form, type) {
+  if (type == "billing") object.fullname = form.elements.fullname.value;
+  if (type == "billing") object.email = form.elements.email.value;
+  object.street = form.elements.street.value;
+  var province = form.elements.province.value ? ", ".concat(form.elements.province.value) : "";
+  var zipcode = form.elements.zipcode.value ? ", ".concat(form.elements.zipcode.value) : "";
+  object.city = "".concat(form.elements.city.value).concat(province).concat(zipcode);
 }
 
-function toggleBillingSummaryVisble() {
-  billingSummary.classList.toggle("hidden");
-  billingForm.classList.toggle("hidden");
+function toggleVisble() {
+  for (var _len = arguments.length, elements = new Array(_len), _key = 0; _key < _len; _key++) {
+    elements[_key] = arguments[_key];
+  }
+
+  elements.forEach(function (el) {
+    return el.classList.toggle("hidden");
+  });
 }
 
 function toggleCheckoutBtnSpinner() {
@@ -5130,45 +5186,50 @@ function checkout() {
 
 function _checkout() {
   _checkout = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var checkout, gatewayPaymentId, items, orderOptions;
+    var _shippingAddressArr$, _shippingAddressArr$2, _billingAddressArr$, _billingAddressArr$2;
+
+    var token, gatewayPaymentId, items, billingAddressArr, shippingAddressArr, orderOptions;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            toggleCheckoutBtnSpinner();
+            _context2.next = 3;
             return (0, _commonjs.generateCheckoutToken)(currentCart.id);
 
-          case 2:
-            checkout = _context2.sent;
-            gatewayPaymentId = checkout.gateways.manual[0].id;
+          case 3:
+            token = _context2.sent;
+            gatewayPaymentId = token.gateways.manual[0].id;
             items = currentCart.line_items.reduce(function (acc, item) {
               acc[item.id] = {
                 quantity: item.quantity
               };
               return acc;
             }, {});
+            billingAddressArr = billingObj.city.split(",");
+            shippingAddressArr = shippingObj.city.split(",");
             orderOptions = {
               line_items: items,
               customer: {
-                firstname: "John",
-                lastname: "Doe",
-                email: "john.doe@example.com"
+                firstname: billingObj.firstname,
+                lastname: billingObj.lastname,
+                email: billingObj.email
               },
               shipping: {
-                name: "John Doe",
-                street: "123 Fake St",
-                town_city: "San Francisco",
-                county_state: "US-CA",
-                postal_zip_code: "94103",
-                country: "US"
+                name: billingObj.fullname,
+                street: shippingObj.street,
+                town_city: shippingAddressArr[0],
+                county_state: (_shippingAddressArr$ = shippingAddressArr[1]) !== null && _shippingAddressArr$ !== void 0 ? _shippingAddressArr$ : "",
+                postal_zip_code: (_shippingAddressArr$2 = shippingAddressArr[2]) !== null && _shippingAddressArr$2 !== void 0 ? _shippingAddressArr$2 : "",
+                country: "SA"
               },
               billing: {
-                name: "John Doe",
-                street: "234 Fake St",
-                town_city: "San Francisco",
-                county_state: "US-CA",
-                postal_zip_code: "94103",
-                country: "US"
+                name: billingObj.fullname,
+                street: billingObj.street,
+                town_city: billingAddressArr[0],
+                county_state: (_billingAddressArr$ = billingAddressArr[1]) !== null && _billingAddressArr$ !== void 0 ? _billingAddressArr$ : "",
+                postal_zip_code: (_billingAddressArr$2 = billingAddressArr[2]) !== null && _billingAddressArr$2 !== void 0 ? _billingAddressArr$2 : "",
+                country: "SA"
               },
               payment: {
                 gateway: "manual",
@@ -5176,10 +5237,11 @@ function _checkout() {
                   id: gatewayPaymentId
                 }
               }
-            }; // let order = await captureOder(checkout.id, orderOptions);
+            };
+            console.log(orderOptions); // let order = await captureOder(checkout.id, orderOptions);
             // console.log(order);
 
-          case 6:
+          case 10:
           case "end":
             return _context2.stop();
         }

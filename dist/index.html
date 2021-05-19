@@ -15,52 +15,53 @@
       <div class="checkout__container">
         <button class="checkout__btn-back"><svg><use xlink:href="./img/arrow.svg#arrow" /></svg> Continue shopping</button>
         <div class="checkout__left">
-          <div class="billing-summary hidden">
-            <div class="billing-summary__check">
+          <div class="summary summary--billing hidden">
+            <div class="summary__check">
               <svg><use xlink:href="./img/tick.svg#tick"/></svg>
             </div>
-            <h6 class="checkout__heading billing-summary__heading">Billing</h6>
-            <button class="billing-summary__btn-edit">Edit</button>
-            <div class="billing-summary__person">
-              <svg class="billing-summary__icon">
+            <h6 class="checkout__heading summary__heading">Billing</h6>
+            <button class="summary__btn-edit summary__btn-edit--billing">Edit</button>
+            <div class="summary__person">
+              <svg class="summary__icon">
                 <use xlink:href="./img/person.svg#person" />
               </svg>
-              <span class="name">Thabiso Magwaza</span>
-              <span class="email">magwazathabiso9@gmail.com</span>
+              <span class="name"></span>
+              <span class="email"></span>
             </div>
-            <div class="billing-summary__address">
-              <svg class="billing-summary__icon">
+            <div class="summary__address">
+              <svg class="summary__icon">
                 <use xlink:href="./img/location.svg#location" />
               </svg>
-              <span class="street">8 Hermittage Terrace</span>
-              <span class="city">Johannesburg, gauteng, ZA, 2092</span>
+              <span class="street"></span>
+              <span class="city"></span>
             </div>
           </div>
+
           <form class="numbered-step numbered-step--form numbered-step--form--billing checkout__form checkout__form--billing">
             <h6 class="checkout__heading">Billing</h6>
             <div class="checkout__form-group checkout__fullname">
-              <label for="#fullname">Full name</label>
-              <input type="text" id="fullname" name="fullname" required>
+              <label for="#billing-fullname">Full name</label>
+              <input type="text" id="billing-fullname" name="fullname" required>
             </div>
             <div class="checkout__form-group checkout__email">
-              <label for="#email">Email</label>
-              <input type="email" id="email" name="email" required>
+              <label for="#billing-email">Email</label>
+              <input type="email" id="billing-email" name="email" required>
             </div>
             <div class="checkout__form-group checkout__province">
-              <label for="#province">Province</label>
-              <input type="text" id="province" name="province">
+              <label for="#billing-province">Province</label>
+              <input type="text" id="billing-province" name="province">
             </div>
             <div class="checkout__form-group checkout__city">
-              <label for="#city">City</label>
-              <input type="text" id="city" name="city" required>
+              <label for="#billing-city">City</label>
+              <input type="text" id="billing-city" name="city" required>
             </div>
             <div class="checkout__form-group checkout__street">
-              <label for="#street">Street address</label>
-              <input type="text" id="street" name="street" required>
+              <label for="#billing-street">Street address</label>
+              <input type="text" id="billing-street" name="street" required>
             </div>
             <div class="checkout__form-group checkout__zipcode">
-              <label for="#zipcode">Postal/ZIP code</label>
-              <input type="text" id="zipcode" name="zipcode">
+              <label for="#billing-zipcode">Postal/ZIP code</label>
+              <input type="text" id="billing-zipcode" name="zipcode">
             </div>
             <div class="checkout__form-group checkout__useshipping">
               <label for="#useshipping">Use as shipping address</label>
@@ -69,12 +70,58 @@
 
             <button type="submit" class="btn-cta mt-small"> <div class="spinner hidden"></div> <span> Continue to shipping </span></button>
           </form>
+
           <div class="numbered-step step-next step-next--shipping">
-            <h6 class="checkout__heading billing-summary__heading">Shipping</h6>
+            <h6 class="checkout__heading summary__heading">Shipping</h6>
           </div>
+
+          <form class="numbered-step numbered-step--form numbered-step--form--shipping checkout__form checkout__form--shipping hidden">
+            <h6 class="checkout__heading">Shipping</h6>
+            <div class="checkout__form-group checkout__province">
+              <label for="#shipping__province">Province</label>
+              <input type="text" id="shipping__province" name="province">
+            </div>
+            <div class="checkout__form-group checkout__city">
+              <label for="#shipping__city">City</label>
+              <input type="text" id="shipping__city" name="city" required>
+            </div>
+            <div class="checkout__form-group checkout__street">
+              <label for="#shipping__street">Street address</label>
+              <input type="text" id="shipping__street" name="street" required>
+            </div>
+            <div class="checkout__form-group checkout__zipcode">
+              <label for="#shipping__zipcode">Postal/ZIP code</label>
+              <input type="text" id="shipping__zipcode" name="zipcode">
+            </div>
+            <button type="submit" class="btn-cta mt-small"> <div class="spinner hidden"></div> <span> Continue to Payment </span></button>
+          </form>
+
+          <div class="summary summary--shipping hidden">
+            <div class="summary__check">
+              <svg><use xlink:href="./img/tick.svg#tick"/></svg>
+            </div>
+            <h6 class="checkout__heading summary__heading">Shipping</h6>
+            <button class="summary__btn-edit summary__btn-edit--shipping">Edit</button>
+            <div class="summary__address">
+              <svg class="summary__icon">
+                <use xlink:href="./img/location.svg#location" />
+              </svg>
+              <span class="street"></span>
+              <span class="city"></span>
+            </div>
+            <div class="summary__person">
+              <svg class="summary__icon">
+                <use xlink:href="./img/box.svg#box" />
+              </svg>
+              <span class="shipping">Free shipping!</span>
+            </div>
+          </div>
+
           <div class="numbered-step step-next step-next--payment">
-            <h6 class="checkout__heading billing-summary__heading">Payment</h6>
+            <h6 class="checkout__heading summary__heading">Payment</h6>
           </div>
+
+          <button class="btn-cta mt-small btn-complete-payment hidden"> <div class="spinner hidden"></div> <span> Complete Payment </span></button>
         </div>
         <div class="checkout__right">
           <div class="checkout__summary"></div>
