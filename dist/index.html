@@ -12,10 +12,31 @@
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <div class="checkout checkout--hidden">
+    <div class="checkout">
       <div class="checkout__container">
         <button class="checkout__btn-back"><svg><use xlink:href="./img/arrow.svg#arrow" /></svg> Continue shopping</button>
         <div class="checkout__left">
+          <div class="billing-summary hidden">
+            <div class="billing-summary__check">
+              <svg><use xlink:href="./img/tick.svg#tick"/></svg>
+            </div>
+            <h6 class="checkout__heading billing-summary__heading">Billing</h6>
+            <button class="billing-summary__btn-edit">Edit</button>
+            <div class="billing-summary__person">
+              <svg class="billing-summary__icon">
+                <use xlink:href="./img/person.svg#person" />
+              </svg>
+              <span class="name">Thabiso Magwaza</span>
+              <span class="email">magwazathabiso9@gmail.com</span>
+            </div>
+            <div class="billing-summary__address">
+              <svg class="billing-summary__icon">
+                <use xlink:href="./img/location.svg#location" />
+              </svg>
+              <span class="street">8 Hermittage Terrace</span>
+              <span class="city">Johannesburg, gauteng, ZA, 2092</span>
+            </div>
+          </div>
           <form class="checkout__form checkout__form--billing">
             <h6 class="checkout__heading">Billing</h6>
             <div class="checkout__form-group checkout__fullname">
@@ -43,7 +64,7 @@
               <input type="text" id="zipcode" name="zipcode">
             </div>
 
-            <button type="submit" class="btn-cta mt-small">Continue to shipping</button>
+            <button type="submit" class="btn-cta mt-small"> <div class="spinner hidden"></div> <span> Continue to shipping </span></button>
           </form>
         </div>
         <div class="checkout__right">
@@ -67,10 +88,10 @@
       <div class="cart-summary__items"></div>
 
       <div class="cart-summary__buttons">
-        <div class="cart-summary__total">
+        <div class="cart-summary__total mb-small">
           Total <span class="cart-summary__value"></span>
         </div>
-        <button class="btn btn-cta btn-checkout">Checkout <svg class="btn-cta__icon"><use xlink:href="./img/arrow.svg#arrow"></svg></button>
+        <button class="btn btn-cta btn-checkout mb-medium">Checkout <svg class="btn-cta__icon"><use xlink:href="./img/arrow.svg#arrow"></svg></button>
         <button class="btn btn-detailed-cart">View detailed cart</button>
       </div>
     </div>

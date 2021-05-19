@@ -1,3 +1,4 @@
+import { set } from "animejs";
 import {
   getProductsAsync,
   createCart,
@@ -13,6 +14,12 @@ import {
   updateCartSummaryUI,
 } from "./modules/updateUI";
 
+let billingEdit = document.querySelector(".billing-summary__btn-edit");
+let billingSummary = document.querySelector(".billing-summary");
+let billingForm = document.querySelector(".checkout__form--billing");
+let billingSubmit = document.querySelector(".checkout__form button");
+let checkoutBtnText = document.querySelector(".checkout__form button span");
+let checkoutSpinner = document.querySelector(".checkout__form .spinner");
 let checkoutPage = document.querySelector(".checkout");
 let checkoutBackBtn = document.querySelector(".checkout__btn-back");
 let checkoutBtn = document.querySelector(".btn-checkout");
@@ -27,6 +34,28 @@ let shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 let allProducts = [];
 let currentCart;
 
+let billingObj = (function (name, email, street, city) {
+  return {
+    set name(v) {
+      name.textContent = v;
+    },
+    set email(v) {
+      email.textContent = v;
+    },
+    set street(v) {
+      street.textContent = v;
+    },
+    set city(v) {
+      city.textContent = v;
+    },
+  };
+})(
+  document.querySelector(".billing-summary__person .name"),
+  document.querySelector(".billing-summary__person .email"),
+  document.querySelector(".billing-summary__address .street"),
+  document.querySelector(".billing-summary__address .city")
+);
+
 getProductsAsync().then((products) => {
   allProducts = products; //cache products
   updateProductsUI(products);
@@ -37,13 +66,52 @@ createCart().then((cart) => {
   updateCartPriceUI(cart.subtotal.formatted);
 });
 
-productsContainer.onclick = addProductsToCart;
-summaryCloseBtn.onclick = closeCartSummary;
-headerCartBtn.onclick = openCartSummary;
-cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
-cartUpdateBtn.addEventListener("click", updateCartItem);
-checkoutBtn.onclick = showCheckoutPage;
-checkoutBackBtn.onclick = showShopping;
+if (productsContainer) productsContainer.onclick = addProductsToCart;
+if (summaryCloseBtn) summaryCloseBtn.onclick = closeCartSummary;
+if (headerCartBtn) headerCartBtn.onclick = openCartSummary;
+if (cartSummaryRemoveBtn)
+  cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
+if (cartUpdateBtn) cartUpdateBtn.addEventListener("click", updateCartItem);
+if (checkoutBtn) checkoutBtn.onclick = handleCheckout;
+if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping;
+if (billingSubmit) billingSubmit.onclick = submitBilling;
+if (billingEdit) billingEdit.onclick = toggleBillingSummaryVisble;
+
+function submitBilling(event) {
+  event.preventDefault();
+  updateBillingSummary();
+  toggleBillingSummaryVisble();
+}
+
+function updateBillingSummary() {
+  billingObj.name = billingForm.elements.fullname.value;
+  billingObj.email = billingForm.elements.email.value;
+  billingObj.street = billingForm.elements.street.value;
+
+  let province = billingForm.elements.province.value
+    ? `,${billingForm.elements.province.value}`
+    : "";
+  let zipcode = billingForm.elements.zipcode.value
+    ? `,${billingForm.elements.zipcode.value}`
+    : "";
+
+  billingObj.city = `${billingForm.elements.city.value}${province}${zipcode}`;
+}
+
+function toggleBillingSummaryVisble() {
+  billingSummary.classList.toggle("hidden");
+  billingForm.classList.toggle("hidden");
+}
+
+function toggleCheckoutBtnSpinner() {
+  checkoutBtnText.classList.toggle("hidden");
+  checkoutSpinner.classList.toggle("hidden");
+}
+
+async function handleCheckout() {
+  showCheckoutPage();
+  await checkout();
+}
 
 function showShopping() {
   shoppingPageElements.forEach((el) => el.classList.remove("hidden"));
@@ -96,8 +164,8 @@ async function checkout() {
     },
   };
 
-  let order = await captureOder(checkout.id, orderOptions);
-  console.log(order);
+  // let order = await captureOder(checkout.id, orderOptions);
+  // console.log(order);
 }
 
 function updateCartItem(event) {

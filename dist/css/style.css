@@ -7,6 +7,7 @@
     --color-onBlue: #d9f0fc;
     --color-blue: #0d59f2;
     --color-modal-background: #f1f2f4;
+    --color-modal-background-light: #f7f7f8;
 }
 
 /* --------------------- UTILITY ------------------------- */
@@ -81,9 +82,9 @@ button {
     visibility: hidden;
 }
 
-/* .checkout ~ * {
+.checkout ~ * {
     display: none;
-} */
+}
 
 .hidden {
     display: none;
@@ -208,6 +209,82 @@ button {
 .checkout__form button {
 
 }
+
+/* --------------------- Billing SUMMARY ------------------------- */
+
+.billing-summary {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-row-gap: 2rem;
+    background-color: var(--color-modal-background-light);
+    padding: 4rem;
+
+    position: relative;
+}
+
+.billing-summary__check {
+    position: absolute;
+    top: 3rem;
+    left: -2rem;
+
+    display: grid;
+    place-items: center;
+    background-color: #fff;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+
+.billing-summary__check svg {
+    width: 3rem;
+    height: 3rem;
+    color: var(--color-blue);
+}
+
+.billing-summary__heading {
+    grid-row: 1;
+    font-size: 2.3rem;
+}
+
+.billing-summary__icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-logo);
+}
+
+.billing-summary__btn-edit {
+    grid-row: 1 ;
+    grid-column: 2;
+    justify-self: right;
+    align-self: center;
+    color: var(--color-blue);
+    border-bottom: 1px solid var(--color-blue);
+    padding: .2rem 0;
+
+    background-color: inherit;
+
+    font-family: inherit;
+    font-weight: 700;
+}
+
+.billing-summary__address,
+.billing-summary__person {
+    display: grid;
+    grid-column-gap: 1rem;
+    grid-template-columns: min-content max-content;
+    grid-template-rows: repeat(2,min-content);
+
+    font-size: 1.4rem;
+    font-weight: 300;
+}
+
+.billing-summary__icon {
+    grid-row: 1 / -1;
+    align-self: center;
+}
+
+
+
 
 /* --------------------- CART SUMMARY ------------------------- */
 .cart-summary {
@@ -388,6 +465,8 @@ button {
     font-weight: 400;
     border-radius: 5px;
     letter-spacing: 1px;
+
+    height: 1.5vw;
 
     display: flex;
     align-items: center;
@@ -606,6 +685,16 @@ button {
 
 }
 /* --------------------- LOADER ------------------------- */
+
+.spinner {
+    width:2.5rem;
+    height:2.5rem;
+    border-radius:50%;
+    background:conic-gradient(#0000 10%,#fff);
+    -webkit-mask:radial-gradient(farthest-side,#0000 calc(100% - 5px),#000 0);
+    animation:s3 .5s infinite linear;
+  }
+  @keyframes s3 {to{transform: rotate(1turn)}}
 
 .blob {
     background-color: var(--color-logo);
