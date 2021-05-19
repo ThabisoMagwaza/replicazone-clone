@@ -34,19 +34,44 @@ let shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 let allProducts = [];
 let currentCart;
 
-let billingObj = (function (name, email, street, city) {
+let billingObj = (function (fullname, email, street, city) {
+  let _firstname, _lastname, _email, _street, _city;
   return {
-    set name(v) {
-      name.textContent = v;
+    set fullname(v) {
+      let nameArr = v.split(" ");
+      _firstname = nameArr[0];
+      _lastname = nameArr[1] ?? "";
+      fullname.textContent = v;
+    },
+    get fullname() {
+      return `${_firstname} ${_lastname}`;
+    },
+    get firstname() {
+      return _firstname;
+    },
+    get lastname() {
+      return _lastname;
     },
     set email(v) {
+      _email = v;
       email.textContent = v;
     },
+    get email() {
+      return _email;
+    },
     set street(v) {
+      _street = v;
       street.textContent = v;
     },
+    get street() {
+      return _street;
+    },
     set city(v) {
+      _city = v;
       city.textContent = v;
+    },
+    get city() {
+      return _city;
     },
   };
 })(
@@ -84,15 +109,15 @@ function submitBilling(event) {
 }
 
 function updateBillingSummary() {
-  billingObj.name = billingForm.elements.fullname.value;
+  billingObj.fullname = billingForm.elements.fullname.value;
   billingObj.email = billingForm.elements.email.value;
   billingObj.street = billingForm.elements.street.value;
 
   let province = billingForm.elements.province.value
-    ? `,${billingForm.elements.province.value}`
+    ? `, ${billingForm.elements.province.value}`
     : "";
   let zipcode = billingForm.elements.zipcode.value
-    ? `,${billingForm.elements.zipcode.value}`
+    ? `, ${billingForm.elements.zipcode.value}`
     : "";
 
   billingObj.city = `${billingForm.elements.city.value}${province}${zipcode}`;

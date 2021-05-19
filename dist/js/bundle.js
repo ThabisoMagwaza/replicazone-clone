@@ -4987,22 +4987,56 @@ var shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 var allProducts = [];
 var currentCart;
 
-var billingObj = function (name, email, street, city) {
+var billingObj = function (fullname, email, street, city) {
+  var _firstname, _lastname, _email, _street, _city;
+
   return {
-    set name(v) {
-      name.textContent = v;
+    set fullname(v) {
+      var _nameArr$;
+
+      var nameArr = v.split(" ");
+      _firstname = nameArr[0];
+      _lastname = (_nameArr$ = nameArr[1]) !== null && _nameArr$ !== void 0 ? _nameArr$ : "";
+      fullname.textContent = v;
+    },
+
+    get fullname() {
+      return "".concat(_firstname, " ").concat(_lastname);
+    },
+
+    get firstname() {
+      return _firstname;
+    },
+
+    get lastname() {
+      return _lastname;
     },
 
     set email(v) {
+      _email = v;
       email.textContent = v;
     },
 
+    get email() {
+      return _email;
+    },
+
     set street(v) {
+      _street = v;
       street.textContent = v;
     },
 
+    get street() {
+      return _street;
+    },
+
     set city(v) {
+      _city = v;
       city.textContent = v;
+    },
+
+    get city() {
+      return _city;
     }
 
   };
@@ -5034,11 +5068,11 @@ function submitBilling(event) {
 }
 
 function updateBillingSummary() {
-  billingObj.name = billingForm.elements.fullname.value;
+  billingObj.fullname = billingForm.elements.fullname.value;
   billingObj.email = billingForm.elements.email.value;
   billingObj.street = billingForm.elements.street.value;
-  var province = billingForm.elements.province.value ? ",".concat(billingForm.elements.province.value) : "";
-  var zipcode = billingForm.elements.zipcode.value ? ",".concat(billingForm.elements.zipcode.value) : "";
+  var province = billingForm.elements.province.value ? ", ".concat(billingForm.elements.province.value) : "";
+  var zipcode = billingForm.elements.zipcode.value ? ", ".concat(billingForm.elements.zipcode.value) : "";
   billingObj.city = "".concat(billingForm.elements.city.value).concat(province).concat(zipcode);
 }
 
