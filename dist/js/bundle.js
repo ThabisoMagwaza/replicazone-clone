@@ -5057,8 +5057,9 @@ if (headerCartBtn) headerCartBtn.onclick = openCartSummary;
 if (cartSummaryRemoveBtn) cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
 if (cartUpdateBtn) cartUpdateBtn.addEventListener("click", updateCartItem);
 if (checkoutBtn) checkoutBtn.onclick = handleCheckout;
-if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping;
-if (billingSubmit) billingSubmit.onclick = submitBilling;
+if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping; // if (billingSubmit) billingSubmit.addEventListener("submit", submitBilling);
+
+if (billingForm) addEventListener("submit", submitBilling);
 if (billingEdit) billingEdit.onclick = toggleBillingSummaryVisble;
 
 function submitBilling(event) {
@@ -5261,7 +5262,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60867" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49921" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

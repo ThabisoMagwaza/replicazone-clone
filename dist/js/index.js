@@ -99,7 +99,8 @@ if (cartSummaryRemoveBtn)
 if (cartUpdateBtn) cartUpdateBtn.addEventListener("click", updateCartItem);
 if (checkoutBtn) checkoutBtn.onclick = handleCheckout;
 if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping;
-if (billingSubmit) billingSubmit.onclick = submitBilling;
+// if (billingSubmit) billingSubmit.addEventListener("submit", submitBilling);
+if (billingForm) addEventListener("submit", submitBilling);
 if (billingEdit) billingEdit.onclick = toggleBillingSummaryVisble;
 
 function submitBilling(event) {
