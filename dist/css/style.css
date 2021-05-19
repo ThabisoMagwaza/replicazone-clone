@@ -135,13 +135,12 @@ button {
     position: relative;
 }
 
-.checkout__form::before {
+.numbered-step::before {
     display: grid;
     place-items: center;
     width: 4rem;
     height: 4rem;
-    background-color: var(--color-onBlue);
-    color: var(--color-blue);
+
     border-radius: 50%;
     padding: .3rem;
 
@@ -149,11 +148,32 @@ button {
     font-size: 2rem;
 
     position: absolute;
-    transform-origin: 50% 50%;
-    transform: translate(-50%,55%);
 }
 
-.checkout__form--billing::before {
+.numbered-step--form::before {
+    transform-origin: 50% 50%;
+    transform: translate(-50%,55%);
+    background-color: var(--color-onBlue);
+    color: var(--color-blue);
+}
+
+.step-next::before {
+    background-color: var(--color-modal-background-light);
+    border: 3px solid #ddd;
+
+    transform-origin: 50% 50%;
+    transform: translate(-140%,-20%);
+}
+
+.step-next--shipping::before {
+    content: "2";
+}
+
+.step-next--payment::before {
+    content: "3";
+}
+
+.numbered-step--form--billing::before {
     content: "1";
 }
 
@@ -204,6 +224,18 @@ button {
 }
 .checkout__left {
     grid-column: 1;
+    display: grid;
+    grid-row-gap: 3rem;
+}
+
+.checkout__useshipping {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.checkout__useshipping input {
+    margin-right: 1rem;
 }
 
 .checkout__form button {
@@ -283,8 +315,12 @@ button {
     align-self: center;
 }
 
+.step-next {
+    background-color: var(--color-modal-background-light);
+    padding: 2rem 5rem;
 
-
+    position: relative;
+}
 
 /* --------------------- CART SUMMARY ------------------------- */
 .cart-summary {

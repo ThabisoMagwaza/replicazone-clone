@@ -17,7 +17,6 @@ import {
 let billingEdit = document.querySelector(".billing-summary__btn-edit");
 let billingSummary = document.querySelector(".billing-summary");
 let billingForm = document.querySelector(".checkout__form--billing");
-let billingSubmit = document.querySelector(".checkout__form button");
 let checkoutBtnText = document.querySelector(".checkout__form button span");
 let checkoutSpinner = document.querySelector(".checkout__form .spinner");
 let checkoutPage = document.querySelector(".checkout");
@@ -99,7 +98,6 @@ if (cartSummaryRemoveBtn)
 if (cartUpdateBtn) cartUpdateBtn.addEventListener("click", updateCartItem);
 if (checkoutBtn) checkoutBtn.onclick = handleCheckout;
 if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping;
-// if (billingSubmit) billingSubmit.addEventListener("submit", submitBilling);
 if (billingForm) addEventListener("submit", submitBilling);
 if (billingEdit) billingEdit.onclick = toggleBillingSummaryVisble;
 

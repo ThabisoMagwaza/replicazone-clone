@@ -7,7 +7,6 @@
     <title>Replica Zone - Demo online store</title>
     <link rel="shortcut icon" href="./img/logo.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css" />
   </head>
@@ -37,7 +36,7 @@
               <span class="city">Johannesburg, gauteng, ZA, 2092</span>
             </div>
           </div>
-          <form class="checkout__form checkout__form--billing">
+          <form class="numbered-step numbered-step--form numbered-step--form--billing checkout__form checkout__form--billing">
             <h6 class="checkout__heading">Billing</h6>
             <div class="checkout__form-group checkout__fullname">
               <label for="#fullname">Full name</label>
@@ -63,9 +62,19 @@
               <label for="#zipcode">Postal/ZIP code</label>
               <input type="text" id="zipcode" name="zipcode">
             </div>
+            <div class="checkout__form-group checkout__useshipping">
+              <label for="#useshipping">Use as shipping address</label>
+              <input type="checkbox" id="useshipping" name="useshipping">
+            </div>
 
             <button type="submit" class="btn-cta mt-small"> <div class="spinner hidden"></div> <span> Continue to shipping </span></button>
           </form>
+          <div class="numbered-step step-next step-next--shipping">
+            <h6 class="checkout__heading billing-summary__heading">Shipping</h6>
+          </div>
+          <div class="numbered-step step-next step-next--payment">
+            <h6 class="checkout__heading billing-summary__heading">Payment</h6>
+          </div>
         </div>
         <div class="checkout__right">
           <div class="checkout__summary"></div>

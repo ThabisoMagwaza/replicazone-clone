@@ -4971,7 +4971,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var billingEdit = document.querySelector(".billing-summary__btn-edit");
 var billingSummary = document.querySelector(".billing-summary");
 var billingForm = document.querySelector(".checkout__form--billing");
-var billingSubmit = document.querySelector(".checkout__form button");
 var checkoutBtnText = document.querySelector(".checkout__form button span");
 var checkoutSpinner = document.querySelector(".checkout__form .spinner");
 var checkoutPage = document.querySelector(".checkout");
@@ -5057,8 +5056,7 @@ if (headerCartBtn) headerCartBtn.onclick = openCartSummary;
 if (cartSummaryRemoveBtn) cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
 if (cartUpdateBtn) cartUpdateBtn.addEventListener("click", updateCartItem);
 if (checkoutBtn) checkoutBtn.onclick = handleCheckout;
-if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping; // if (billingSubmit) billingSubmit.addEventListener("submit", submitBilling);
-
+if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping;
 if (billingForm) addEventListener("submit", submitBilling);
 if (billingEdit) billingEdit.onclick = toggleBillingSummaryVisble;
 
@@ -5262,7 +5260,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49921" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58585" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
