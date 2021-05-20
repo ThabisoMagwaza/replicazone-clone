@@ -1,4 +1,3 @@
-import { set } from "animejs";
 import {
   getProductsAsync,
   createCart,
@@ -12,6 +11,7 @@ import {
   updateProductsUI,
   updateCartPriceUI,
   updateCartSummaryUI,
+  populateOrderSummaryUI,
 } from "./modules/updateUI";
 
 let btnPayment = document.querySelector(".btn-complete-payment");
@@ -204,7 +204,7 @@ function toggleCheckoutBtnSpinner() {
 
 async function handleCheckout() {
   showCheckoutPage();
-  await checkout();
+  // await checkout();
 }
 
 function showShopping() {
@@ -216,6 +216,7 @@ function showShopping() {
 function showCheckoutPage() {
   checkoutPage.classList.remove("checkout--hidden");
   shoppingPageElements.forEach((el) => el.classList.add("hidden"));
+  populateOrderSummaryUI(currentCart);
 }
 
 async function checkout() {

@@ -82,9 +82,9 @@ button {
     visibility: hidden;
 }
 
-.checkout ~ * {
+/* .checkout ~ * {
     display: none;
-}
+} */
 
 .hidden {
     display: none;

@@ -1,12 +1,15 @@
 import createCard from "./cardTemplate";
 import createCartSummaryCard from "./cartSummaryTemplate";
 import anime from "animejs/lib/anime.es.js";
+import createOrderSummaryItem from "./orderSummaryItemTemplate";
 
 let cardsContainer = document.querySelector(".container");
 let loader = document.querySelector(".loader");
 let cartPriceUI = document.querySelector(".header__value");
 let cartSummaryUI = document.querySelector(".cart-summary__items");
 let cartSammaryTotalUI = document.querySelector(".cart-summary__value");
+let oderSummaryItems = document.querySelector(".order__items");
+let orderTotal = document.querySelector(".order__total span");
 
 export function updateProductsUI(products) {
   let altenator = 0;
@@ -49,4 +52,10 @@ export function updateCartSummaryUI(cart) {
   cartSummaryUI.insertAdjacentHTML("afterbegin", cartSummaryStrings.join("\n"));
 
   cartSammaryTotalUI.textContent = cart.subtotal.formatted_with_symbol;
+}
+
+export function populateOrderSummaryUI(cart) {
+  let lineItems = cart.line_items.map((item) => createOrderSummaryItem(item));
+  oderSummaryItems.innerHTML = lineItems.join("\n");
+  orderTotal.textContent = cart.subtotal.formatted_with_symbol;
 }
