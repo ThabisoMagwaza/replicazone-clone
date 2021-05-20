@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <div class="checkout checkout--hidden">
+    <div class="checkout">
       <div class="checkout__container">
         <button class="checkout__btn-back"><svg><use xlink:href="./img/arrow.svg#arrow" /></svg> Continue shopping</button>
         <div class="checkout__left">
@@ -37,7 +37,7 @@
             </div>
           </div>
 
-          <form class="numbered-step numbered-step--form numbered-step--form--billing checkout__form checkout__form--billing">
+          <form action="" class="numbered-step numbered-step--form numbered-step--form--billing checkout__form checkout__form--billing">
             <h6 class="checkout__heading">Billing</h6>
             <div class="checkout__form-group checkout__fullname">
               <label for="#billing-fullname">Full name</label>
@@ -75,7 +75,7 @@
             <h6 class="checkout__heading summary__heading">Shipping</h6>
           </div>
 
-          <form class="numbered-step numbered-step--form numbered-step--form--shipping checkout__form checkout__form--shipping hidden">
+          <form action="" class="numbered-step numbered-step--form numbered-step--form--shipping checkout__form checkout__form--shipping hidden">
             <h6 class="checkout__heading">Shipping</h6>
             <div class="checkout__form-group checkout__province">
               <label for="#shipping__province">Province</label>
@@ -124,10 +124,30 @@
           <button class="btn-cta mt-small btn-complete-payment hidden"> <div class="spinner hidden"></div> <span> Complete Payment </span></button>
         </div>
         <div class="checkout__right">
-          <div class="checkout__summary"></div>
-        </div>
+          <div class="order-summary">
+            <h6 class="checkout__heading">Order Summary</h6>
+            <button class="summary__btn-edit summary__btn-edit--order">Edit</button>
+            <div class="order__items">
+              <div class="order__item">
+                <span class="name">Rosy-Fingered Dawn at Louse Point</span>
+                <span class="quantity">x1</span>
+                <span class="price">$49.95</span>
+              </div>
+              <div class="order__item">
+                <span class="name">Starry Night</span>
+                <span class="quantity">x2</span>
+                <span class="price">$159.90</span>
+              </div>
+          
+            </div>
+            <div class="order__total">
+              <span>Total</span> <span>$109.85</span>
+            </div>
+          </div>
       </div>
     </div>
+  </div>  
+
 
     <div class="cart-summary cart-summary--hidden">
       <h3 class="cart-summary__header">

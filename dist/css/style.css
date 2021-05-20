@@ -82,9 +82,9 @@ button {
     visibility: hidden;
 }
 
-/* .checkout ~ * {
+.checkout ~ * {
     display: none;
-} */
+}
 
 .hidden {
     display: none;
@@ -97,7 +97,6 @@ button {
     display: grid;
     grid-column-gap: 5rem;
     justify-content: space-around;
-    grid-template-columns: min-content;
     grid-template-columns: repeat(2,1fr);
 }
 
@@ -220,12 +219,6 @@ button {
     box-shadow: 0 0 .5rem #a6dcf7;
 }
 
-.checkout__summary {
-    width: 40vw;
-    height: 50rem;
-    background-color: blueviolet;
-    position: fixed;
-}
 .checkout__left {
     grid-column: 1;
     display: grid;
@@ -245,6 +238,70 @@ button {
 #useshipping:focus {
     border: none;
     outline: none;
+}
+
+.order-summary {
+    width: 35vw;
+    position: fixed;
+
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-row-gap: 2rem;
+
+    background-color: #fff;
+    padding: 4rem 0;
+
+    font-size: 1.6rem;
+    font-weight: 300;
+}
+
+.order-summary .checkout__heading {
+    font-size: 2rem;
+}
+
+.order-summary > * {
+    padding: 0 4rem;
+}
+
+.order__items,
+.order__total {
+    grid-column: 1 / -1;
+}
+
+.order__items {
+    border-bottom:solid 1px #ddd ;
+    padding-bottom: 2rem;
+
+    display: grid;
+    grid-row-gap: 1rem;
+}
+
+.order__item {
+    display: grid;
+    grid-template-columns: 5fr repeat(2,2fr);
+}
+
+.order__item .price {
+    justify-self: end;
+}
+
+.order__total
+{
+    grid-column: 1/ -1;
+    display: flex;
+    justify-content: space-between;
+
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+.summary__btn-edit--order,
+.order-summary .checkout__heading {
+    grid-row: 1;
+}
+
+.summary__btn-edit--order {
+    margin-right: 4rem;
 }
 
 /* --------------------- Billing SUMMARY ------------------------- */
