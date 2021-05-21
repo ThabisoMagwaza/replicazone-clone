@@ -5055,7 +5055,6 @@ var productsContainer = document.querySelector(".container");
 var shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 var orderSummaryEditBtn = document.querySelector(".summary__btn-edit--order");
 var summaryCartOverlay = document.querySelector(".overlay");
-var allProducts = [];
 var currentCart;
 
 var billingObj = function (fullname, email, street, city) {
@@ -5139,49 +5138,54 @@ var shippingObj = function (street, city) {
 }(document.querySelector(".summary--shipping .street"), document.querySelector(".summary--shipping .city"));
 
 (0, _commonjs.getProductsAsync)().then(function (products) {
-  allProducts = products; //cache products
-
   (0, _updateUI.updateProductsUI)(products);
 });
 (0, _commonjs.createCart)().then(function (cart) {
   currentCart = cart;
   (0, _updateUI.updateCartPriceUI)(cart.subtotal.formatted);
 });
-if (btnPayment) btnPayment.onclick = checkout;
-if (productsContainer) productsContainer.onclick = addProductsToCart;
-if (summaryCloseBtn) summaryCloseBtn.onclick = closeCartSummary;
-if (headerCartBtn) headerCartBtn.onclick = openCartSummary;
-if (cartSummaryRemoveBtn) cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
-if (cartUpdateBtn) cartUpdateBtn.addEventListener("click", updateCartItem);
-if (checkoutBtn) checkoutBtn.onclick = handleCheckout;
-if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping;
-if (billingForm) billingForm.addEventListener("submit", submitBilling);
-if (billingEdit) billingEdit.addEventListener("click", function () {
-  (0, _helpers.toggleVisble)(billingSummary, billingForm, nextStepShipping, shippingSummary);
-  nextStepPayment.classList.remove("hidden");
-  btnPayment.classList.add("hidden");
+btnPayment.onclick = checkout;
+productsContainer.onclick = addProductsToCart;
+summaryCloseBtn.onclick = closeCartSummary;
+headerCartBtn.onclick = openCartSummary;
+cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
+cartUpdateBtn.addEventListener("click", updateCartItem);
+checkoutBtn.onclick = handleCheckout;
+checkoutBackBtn.onclick = showShopping;
+billingForm.addEventListener("submit", submitBilling);
+billingEdit.addEventListener("click", function () {
+  (0, _helpers.show)(billingForm, nextStepShipping, nextStepPayment);
+  (0, _helpers.hide)(billingSummary, shippingSummary, btnPayment);
 });
-if (shippingEdit) shippingEdit.addEventListener("click", function () {
-  (0, _helpers.toggleVisble)(shippingSummary, shippingForm);
-  nextStepPayment.classList.remove("hidden");
-  btnPayment.classList.add("hidden");
+shippingEdit.addEventListener("click", function () {
+  (0, _helpers.show)(shippingForm, nextStepPayment);
+  (0, _helpers.hide)(shippingSummary, btnPayment);
 });
-if (shippingForm) shippingForm.onsubmit = submitShipping;
-if (orderSummaryEditBtn) orderSummaryEditBtn.onclick = openCartSummary;
-if (summaryCartOverlay) summaryCartOverlay.onclick = closeCartSummary;
+shippingForm.onsubmit = submitShipping;
+orderSummaryEditBtn.onclick = openCartSummary;
+summaryCartOverlay.onclick = closeCartSummary;
 
 function submitShipping(event) {
   event.preventDefault();
   updateFormObject(shippingObj, shippingForm);
-  (0, _helpers.toggleVisble)(shippingSummary, shippingForm, nextStepPayment, btnPayment);
+  (0, _helpers.hide)(shippingForm, nextStepPayment);
+  (0, _helpers.show)(shippingSummary, btnPayment);
 }
 
 function submitBilling(event) {
   event.preventDefault();
   updateFormObject(billingObj, billingForm, "billing");
-  if (!useShipping.checked) return (0, _helpers.toggleVisble)(billingSummary, billingForm, nextStepShipping, shippingForm);
-  updateFormObject(shippingObj, billingForm);
-  (0, _helpers.toggleVisble)(billingForm, billingSummary, nextStepShipping, shippingSummary, nextStepPayment, btnPayment);
+  (0, _helpers.hide)(billingForm);
+  (0, _helpers.show)(billingSummary);
+
+  if (!useShipping.checked) {
+    (0, _helpers.show)(shippingForm);
+    (0, _helpers.hide)(nextStepShipping);
+  } else {
+    updateFormObject(shippingObj, billingForm);
+    (0, _helpers.hide)(nextStepShipping, nextStepPayment);
+    (0, _helpers.show)(shippingSummary, btnPayment);
+  }
 }
 
 function updateFormObject(object, form, type) {
@@ -5372,6 +5376,7 @@ function closeCartSummary() {
   (0, _updateUI.updateCartPriceUI)(currentCart.subtotal.formatted);
   summaryCart.classList.add("cart-summary--hidden");
   (0, _helpers.hide)(summaryCartOverlay);
+  (0, _updateUI.populateOrderSummaryUI)(currentCart);
 }
 
 function openCartSummary() {
