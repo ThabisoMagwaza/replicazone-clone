@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "parcel dist/js/index.js --out-dir dist/js/ --out-file bundle.js --public-url ."
+    "watch": "parcel dist/js/index.js --out-dir dist/js/ --out-file bundle.js --public-url .",
+    "build": "parcel build dist/js/index.js --out-dir dist/js/ --out-file bundle.js"
   },
   "keywords": [],
   "author": "",
