@@ -70,7 +70,7 @@ button {
     top: 0;
     bottom: 0;
     width: 100vw;
-    z-index: 300;
+    z-index: 200;
     overflow-y: scroll;
     background-color: var(--color-modal-background);
 
@@ -386,7 +386,7 @@ button {
 
 /* --------------------- CART SUMMARY ------------------------- */
 .cart-summary {
-    z-index: 200;
+    z-index: 300;
     background-color: #fff;
     position: fixed;
     top: 0;
@@ -395,17 +395,40 @@ button {
     width: 35vw;
     min-height: 100vh;
 
+    box-shadow: 0 2rem 10rem rgba(0, 0, 0, .1);
+
 
     display: grid;
     grid-template-rows: min-content;
 
     transition: transform .3s ease;
+
+    /* position: relative; */
 }
+
+/* .cart-summary::before {
+    display: block;
+    content: "";
+
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, .5);
+
+    z-index: 250;
+    position: relative;
+    right: 0;
+} */
 
 .cart-summary--hidden {
     display: hidden;
     transform: translateX(100%);
 }
+
+/* .cart-summary--hidden::before {
+    display: hidden;
+} */
+
+
 
 .cart-summary__header {
     background-color:var(--color-gray-light);

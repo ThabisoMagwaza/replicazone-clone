@@ -36,6 +36,7 @@ let summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
 let summaryCart = document.querySelector(".cart-summary");
 let productsContainer = document.querySelector(".container");
 let shoppingPageElements = document.querySelectorAll(".checkout ~ *");
+let orderSummaryEditBtn = document.querySelector(".summary__btn-edit--order");
 
 let allProducts = [];
 let currentCart;
@@ -148,6 +149,7 @@ if (shippingEdit)
     btnPayment.classList.add("hidden");
   });
 if (shippingForm) shippingForm.onsubmit = submitShipping;
+if (orderSummaryEditBtn) orderSummaryEditBtn.onclick = openCartSummary;
 
 function submitShipping(event) {
   event.preventDefault();
@@ -216,6 +218,8 @@ function showShopping() {
 function showCheckoutPage() {
   checkoutPage.classList.remove("checkout--hidden");
   shoppingPageElements.forEach((el) => el.classList.add("hidden"));
+  summaryCart.classList.remove("hidden");
+  closeCartSummary();
   populateOrderSummaryUI(currentCart);
 }
 
@@ -268,18 +272,21 @@ async function checkout() {
   // console.log(order);
 }
 
-function updateCartItem(event) {
+async function updateCartItem(event) {
   if (!event.target.closest(".cart-summary__quantity-btn")) return;
   let dataset = event.target.closest(".cart-summary__quantity-btn").dataset;
   let currentItem = currentCart.line_items.find(
     (item) => item.id === dataset.productid
   );
-  updateCart(
+
+  let res = await updateCart(
     dataset.productid,
     dataset.action == "inc"
       ? currentItem.quantity + 1
       : currentItem.quantity - 1
-  ).then((res) => updateCartState(res));
+  );
+  updateCartState(res);
+  populateOrderSummaryUI(currentCart);
 }
 
 function removeItemFromCart(event) {
@@ -307,6 +314,7 @@ function closeCartSummary() {
 }
 
 function openCartSummary() {
+  console.log("openCartSummary!");
   updateCartSummaryUI(currentCart);
   summaryCart.classList.remove("cart-summary--hidden");
 }

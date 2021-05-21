@@ -5012,6 +5012,7 @@ var summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
 var summaryCart = document.querySelector(".cart-summary");
 var productsContainer = document.querySelector(".container");
 var shoppingPageElements = document.querySelectorAll(".checkout ~ *");
+var orderSummaryEditBtn = document.querySelector(".summary__btn-edit--order");
 var allProducts = [];
 var currentCart;
 
@@ -5124,6 +5125,7 @@ if (shippingEdit) shippingEdit.addEventListener("click", function () {
   btnPayment.classList.add("hidden");
 });
 if (shippingForm) shippingForm.onsubmit = submitShipping;
+if (orderSummaryEditBtn) orderSummaryEditBtn.onclick = openCartSummary;
 
 function submitShipping(event) {
   event.preventDefault();
@@ -5198,6 +5200,8 @@ function showCheckoutPage() {
   shoppingPageElements.forEach(function (el) {
     return el.classList.add("hidden");
   });
+  summaryCart.classList.remove("hidden");
+  closeCartSummary();
   (0, _updateUI.populateOrderSummaryUI)(currentCart);
 }
 
@@ -5272,15 +5276,45 @@ function _checkout() {
   return _checkout.apply(this, arguments);
 }
 
-function updateCartItem(event) {
-  if (!event.target.closest(".cart-summary__quantity-btn")) return;
-  var dataset = event.target.closest(".cart-summary__quantity-btn").dataset;
-  var currentItem = currentCart.line_items.find(function (item) {
-    return item.id === dataset.productid;
-  });
-  (0, _commonjs.updateCart)(dataset.productid, dataset.action == "inc" ? currentItem.quantity + 1 : currentItem.quantity - 1).then(function (res) {
-    return updateCartState(res);
-  });
+function updateCartItem(_x) {
+  return _updateCartItem.apply(this, arguments);
+}
+
+function _updateCartItem() {
+  _updateCartItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(event) {
+    var dataset, currentItem, res;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            if (event.target.closest(".cart-summary__quantity-btn")) {
+              _context3.next = 2;
+              break;
+            }
+
+            return _context3.abrupt("return");
+
+          case 2:
+            dataset = event.target.closest(".cart-summary__quantity-btn").dataset;
+            currentItem = currentCart.line_items.find(function (item) {
+              return item.id === dataset.productid;
+            });
+            _context3.next = 6;
+            return (0, _commonjs.updateCart)(dataset.productid, dataset.action == "inc" ? currentItem.quantity + 1 : currentItem.quantity - 1);
+
+          case 6:
+            res = _context3.sent;
+            updateCartState(res);
+            (0, _updateUI.populateOrderSummaryUI)(currentCart);
+
+          case 9:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _updateCartItem.apply(this, arguments);
 }
 
 function removeItemFromCart(event) {
@@ -5307,6 +5341,7 @@ function closeCartSummary() {
 }
 
 function openCartSummary() {
+  console.log("openCartSummary!");
   (0, _updateUI.updateCartSummaryUI)(currentCart);
   summaryCart.classList.remove("cart-summary--hidden");
 }
@@ -5343,7 +5378,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52677" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56373" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
