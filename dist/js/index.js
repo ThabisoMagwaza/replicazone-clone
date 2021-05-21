@@ -14,6 +14,7 @@ import {
   populateOrderSummaryUI,
 } from "./modules/updateUI";
 import { show, toggleVisble, hide } from "./modules/helpers";
+import axios from "axios";
 
 let btnPayment = document.querySelector(".btn-complete-payment");
 let useShipping = document.querySelector("#useshipping");
@@ -255,6 +256,13 @@ async function checkout() {
 
   // let order = await captureOder(checkout.id, orderOptions);
   // console.log(order);
+
+  let updateOrderUrl = "/.netlify/functions/update-order-status";
+  try {
+    let message = await axios.get(updateOrderUrl);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 async function updateCartItem(event) {
