@@ -402,31 +402,27 @@ button {
     grid-template-rows: min-content;
 
     transition: transform .3s ease;
-
-    /* position: relative; */
 }
 
-/* .cart-summary::before {
-    display: block;
-    content: "";
-
+.overlay {
     width: 100vw;
     height: 100vh;
-    background-color: rgba(255, 255, 255, .5);
+    background-color: rgba(255, 255, 255, .7);
 
     z-index: 250;
-    position: relative;
-    right: 0;
-} */
+
+    position: fixed;
+    top: 0;
+}
 
 .cart-summary--hidden {
     display: hidden;
     transform: translateX(100%);
 }
 
-/* .cart-summary--hidden::before {
-    display: hidden;
-} */
+.cart-summary--hidden .overlay {
+    display: none;
+}
 
 
 

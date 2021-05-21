@@ -4979,12 +4979,53 @@ function populateOrderSummaryUI(cart) {
   oderSummaryItems.innerHTML = lineItems.join("\n");
   orderTotal.textContent = cart.subtotal.formatted_with_symbol;
 }
-},{"./cardTemplate":"modules/cardTemplate.js","./cartSummaryTemplate":"modules/cartSummaryTemplate.js","animejs/lib/anime.es.js":"../../node_modules/animejs/lib/anime.es.js","./orderSummaryItemTemplate":"modules/orderSummaryItemTemplate.js"}],"index.js":[function(require,module,exports) {
+},{"./cardTemplate":"modules/cardTemplate.js","./cartSummaryTemplate":"modules/cartSummaryTemplate.js","animejs/lib/anime.es.js":"../../node_modules/animejs/lib/anime.es.js","./orderSummaryItemTemplate":"modules/orderSummaryItemTemplate.js"}],"modules/helpers.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.toggleVisble = toggleVisble;
+exports.hide = hide;
+exports.show = show;
+
+function toggleVisble() {
+  for (var _len = arguments.length, elements = new Array(_len), _key = 0; _key < _len; _key++) {
+    elements[_key] = arguments[_key];
+  }
+
+  elements.forEach(function (el) {
+    return el.classList.toggle("hidden");
+  });
+}
+
+function hide() {
+  for (var _len2 = arguments.length, elements = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    elements[_key2] = arguments[_key2];
+  }
+
+  elements.forEach(function (el) {
+    return el.classList.add("hidden");
+  });
+}
+
+function show() {
+  for (var _len3 = arguments.length, elements = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+    elements[_key3] = arguments[_key3];
+  }
+
+  elements.forEach(function (el) {
+    return el.classList.remove("hidden");
+  });
+}
+},{}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _commonjs = require("./modules/commonjs");
 
 var _updateUI = require("./modules/updateUI");
+
+var _helpers = require("./modules/helpers");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -5013,6 +5054,7 @@ var summaryCart = document.querySelector(".cart-summary");
 var productsContainer = document.querySelector(".container");
 var shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 var orderSummaryEditBtn = document.querySelector(".summary__btn-edit--order");
+var summaryCartOverlay = document.querySelector(".overlay");
 var allProducts = [];
 var currentCart;
 
@@ -5115,30 +5157,31 @@ if (checkoutBtn) checkoutBtn.onclick = handleCheckout;
 if (checkoutBackBtn) checkoutBackBtn.onclick = showShopping;
 if (billingForm) billingForm.addEventListener("submit", submitBilling);
 if (billingEdit) billingEdit.addEventListener("click", function () {
-  toggleVisble(billingSummary, billingForm, nextStepShipping, shippingSummary);
+  (0, _helpers.toggleVisble)(billingSummary, billingForm, nextStepShipping, shippingSummary);
   nextStepPayment.classList.remove("hidden");
   btnPayment.classList.add("hidden");
 });
 if (shippingEdit) shippingEdit.addEventListener("click", function () {
-  toggleVisble(shippingSummary, shippingForm);
+  (0, _helpers.toggleVisble)(shippingSummary, shippingForm);
   nextStepPayment.classList.remove("hidden");
   btnPayment.classList.add("hidden");
 });
 if (shippingForm) shippingForm.onsubmit = submitShipping;
 if (orderSummaryEditBtn) orderSummaryEditBtn.onclick = openCartSummary;
+if (summaryCartOverlay) summaryCartOverlay.onclick = closeCartSummary;
 
 function submitShipping(event) {
   event.preventDefault();
   updateFormObject(shippingObj, shippingForm);
-  toggleVisble(shippingSummary, shippingForm, nextStepPayment, btnPayment);
+  (0, _helpers.toggleVisble)(shippingSummary, shippingForm, nextStepPayment, btnPayment);
 }
 
 function submitBilling(event) {
   event.preventDefault();
   updateFormObject(billingObj, billingForm, "billing");
-  if (!useShipping.checked) return toggleVisble(billingSummary, billingForm, nextStepShipping, shippingForm);
+  if (!useShipping.checked) return (0, _helpers.toggleVisble)(billingSummary, billingForm, nextStepShipping, shippingForm);
   updateFormObject(shippingObj, billingForm);
-  toggleVisble(billingForm, billingSummary, nextStepShipping, shippingSummary, nextStepPayment, btnPayment);
+  (0, _helpers.toggleVisble)(billingForm, billingSummary, nextStepShipping, shippingSummary, nextStepPayment, btnPayment);
 }
 
 function updateFormObject(object, form, type) {
@@ -5148,16 +5191,6 @@ function updateFormObject(object, form, type) {
   var province = form.elements.province.value ? ", ".concat(form.elements.province.value) : "";
   var zipcode = form.elements.zipcode.value ? ", ".concat(form.elements.zipcode.value) : "";
   object.city = "".concat(form.elements.city.value).concat(province).concat(zipcode);
-}
-
-function toggleVisble() {
-  for (var _len = arguments.length, elements = new Array(_len), _key = 0; _key < _len; _key++) {
-    elements[_key] = arguments[_key];
-  }
-
-  elements.forEach(function (el) {
-    return el.classList.toggle("hidden");
-  });
 }
 
 function toggleCheckoutBtnSpinner() {
@@ -5338,19 +5371,20 @@ function addProductsToCart(event) {
 function closeCartSummary() {
   (0, _updateUI.updateCartPriceUI)(currentCart.subtotal.formatted);
   summaryCart.classList.add("cart-summary--hidden");
+  (0, _helpers.hide)(summaryCartOverlay);
 }
 
 function openCartSummary() {
-  console.log("openCartSummary!");
   (0, _updateUI.updateCartSummaryUI)(currentCart);
   summaryCart.classList.remove("cart-summary--hidden");
+  (0, _helpers.show)(summaryCartOverlay);
 }
 
 function updateCartState(res) {
   currentCart = res.cart;
   (0, _updateUI.updateCartSummaryUI)(currentCart);
 }
-},{"./modules/commonjs":"modules/commonjs.js","./modules/updateUI":"modules/updateUI.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./modules/commonjs":"modules/commonjs.js","./modules/updateUI":"modules/updateUI.js","./modules/helpers":"modules/helpers.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

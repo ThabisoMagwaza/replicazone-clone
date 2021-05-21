@@ -13,6 +13,7 @@ import {
   updateCartSummaryUI,
   populateOrderSummaryUI,
 } from "./modules/updateUI";
+import { show, toggleVisble, hide } from "./modules/helpers";
 
 let btnPayment = document.querySelector(".btn-complete-payment");
 let useShipping = document.querySelector("#useshipping");
@@ -37,6 +38,7 @@ let summaryCart = document.querySelector(".cart-summary");
 let productsContainer = document.querySelector(".container");
 let shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 let orderSummaryEditBtn = document.querySelector(".summary__btn-edit--order");
+let summaryCartOverlay = document.querySelector(".overlay");
 
 let allProducts = [];
 let currentCart;
@@ -150,6 +152,7 @@ if (shippingEdit)
   });
 if (shippingForm) shippingForm.onsubmit = submitShipping;
 if (orderSummaryEditBtn) orderSummaryEditBtn.onclick = openCartSummary;
+if (summaryCartOverlay) summaryCartOverlay.onclick = closeCartSummary;
 
 function submitShipping(event) {
   event.preventDefault();
@@ -193,10 +196,6 @@ function updateFormObject(object, form, type) {
     : "";
 
   object.city = `${form.elements.city.value}${province}${zipcode}`;
-}
-
-function toggleVisble(...elements) {
-  elements.forEach((el) => el.classList.toggle("hidden"));
 }
 
 function toggleCheckoutBtnSpinner() {
@@ -311,12 +310,13 @@ function addProductsToCart(event) {
 function closeCartSummary() {
   updateCartPriceUI(currentCart.subtotal.formatted);
   summaryCart.classList.add("cart-summary--hidden");
+  hide(summaryCartOverlay);
 }
 
 function openCartSummary() {
-  console.log("openCartSummary!");
   updateCartSummaryUI(currentCart);
   summaryCart.classList.remove("cart-summary--hidden");
+  show(summaryCartOverlay);
 }
 
 function updateCartState(res) {
