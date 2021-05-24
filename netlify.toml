@@ -5,5 +5,5 @@
 
 [[redirects]]
     from = "/api/update-order-status"
-    to = "https://gallant-elion-7705d9.netlify.app/.netlify/functions/update-order-status"
+    to = "/.netlify/functions/update-order-status"
     status = 200
