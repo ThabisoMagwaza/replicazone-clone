@@ -257,7 +257,7 @@ async function checkout() {
   // let order = await captureOder(checkout.id, orderOptions);
   // console.log(order);
 
-  let testUrl = "https://gallant-elion-7705d9.netlify.app";
+  // let testUrl = "https://gallant-elion-7705d9.netlify.app";
   let updateOrderUrl = `/api/update-order-status`;
   try {
     let res = await axios.get(updateOrderUrl);
