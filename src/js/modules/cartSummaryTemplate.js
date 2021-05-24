@@ -18,11 +18,15 @@ export default function createCartSummaryCard(item) {
       <h5>Quantity</h5>
       <div class="cart-summary__quantity-btns">
         <button class="cart-summary__quantity-btn" data-action="dec" data-productId=${item.id}>
-          <img src="./img/minus.svg" alt="minus icon" />
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 31H16v2.462h32V31z" fill="currentColor"></path>
+          </svg>
         </button>
         <span class="val">${item.quantity}</span>
         <button class="cart-summary__quantity-btn" data-action="inc" data-productId=${item.id}>
-          <img src="./img/cross.svg" alt="plus icon" />
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M33.23 30.77H48v2.46H33.23V48h-2.46V33.23H16v-2.46h14.77V16h2.46v14.77z" fill="currentColor"></path>
+          </svg>
         </button>
       </div>
     </div>

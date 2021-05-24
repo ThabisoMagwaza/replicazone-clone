@@ -513,7 +513,7 @@ button {
     background-color: #a9e4ff;
 }
 
-.cart-summary__quantity-btn img {
+.cart-summary__quantity-btn svg {
     display: block;
     width: 1.5rem;
     height: 1.5rem;
