@@ -234,7 +234,7 @@ async function checkout() {
       town_city: shippingAddressArr[0],
       county_state: shippingAddressArr[1] ?? "",
       postal_zip_code: shippingAddressArr[2] ?? "",
-      country: "SA",
+      country: "ZA",
     },
     billing: {
       name: billingObj.fullname,
@@ -242,7 +242,7 @@ async function checkout() {
       town_city: billingAddressArr[0],
       county_state: billingAddressArr[1] ?? "",
       postal_zip_code: billingAddressArr[2] ?? "",
-      country: "SA",
+      country: "ZA",
     },
     payment: {
       gateway: "manual",
@@ -252,16 +252,15 @@ async function checkout() {
     },
   };
 
-  console.log(orderOptions);
+  let order = await captureOder(token.id, orderOptions);
 
-  // let order = await captureOder(checkout.id, orderOptions);
-  // console.log(order);
+  let transactionId = order.transactions[0].id;
 
-  // let testUrl = "https://gallant-elion-7705d9.netlify.app";
-  let updateOrderUrl = `/api/update-order-status`;
+  let updateOrderUrl = `/api/update-order-status?orderId=${order.id}&transactionId=${transactionId}`;
   try {
     let res = await axios.get(updateOrderUrl);
-    console.log(res.data.message);
+    console.log(res.data);
+    toggleCheckoutBtnSpinner();
   } catch (err) {
     console.log(err);
   }

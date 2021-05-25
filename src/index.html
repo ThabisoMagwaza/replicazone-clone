@@ -66,7 +66,7 @@
             </div>
             <div class="checkout__form-group checkout__useshipping">
               <label for="#useshipping">Use as shipping address</label>
-              <input type="checkbox" id="useshipping" name="useshipping">
+              <input type="checkbox" id="useshipping" name="useshipping" checked>
             </div>
 
             <button type="submit" class="btn-cta mt-small"> <div class="spinner hidden"></div> <span> Continue to shipping </span></button>
@@ -122,7 +122,15 @@
             <h6 class="checkout__heading summary__heading">Payment</h6>
           </div>
 
-          <button class="btn-cta mt-small btn-complete-payment hidden"> <div class="spinner hidden"></div> <span> Complete Payment </span></button>
+          <button class="btn-cta mt-small btn-complete-payment hidden"> 
+            <div class="spinner hidden"></div> <span> Complete Payment </span>
+          </button>
+
+          <button class="btn-cta mt-small btn-payment-completed"> 
+            <span class="text-completed">Payment successfuly Completed!</span>
+            <span class="text-continue"> <svg><use xlink:href="./img/arrow.svg#arrow" /></svg> Continue shopping</span>
+          </button>
+
         </div>
         <div class="checkout__right">
           <div class="order-summary">

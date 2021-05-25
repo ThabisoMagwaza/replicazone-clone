@@ -304,6 +304,11 @@ button {
     margin-right: 4rem;
 }
 
+.btn-complete-payment--paid:hover {
+    transform: none;
+    box-shadow: none;
+}
+
 /* --------------------- Billing SUMMARY ------------------------- */
 
 .summary {
@@ -607,6 +612,30 @@ button {
 .btn-cta:hover .btn-cta__icon {
     transform: rotate(180deg) translate(-2.5rem);
 }
+
+.btn-payment-completed {
+    background-color: rgb(28, 184, 54);
+}
+
+.btn-payment-completed .text-continue {
+    display: none;
+}
+
+.text-continue svg{
+    width: 3rem;
+    height: 3rem;
+    margin-right: 1rem;
+}
+
+.btn-payment-completed:hover .text-completed {
+    display: none;
+}
+
+.btn-payment-completed:hover .text-continue {
+    display: flex;
+    align-items: center
+}
+
 
 /* --------------------- Header ------------------------- */
 
