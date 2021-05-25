@@ -17,6 +17,7 @@ import {
 import { show, toggleVisble, hide } from "./modules/helpers";
 import axios from "axios";
 
+let paymentForm = document.querySelector("#payment-form");
 let btnPaymentComplete = document.querySelector(".btn-payment-completed");
 let btnPayment = document.querySelector(".btn-complete-payment");
 let useShipping = document.querySelector("#useshipping");
@@ -44,6 +45,8 @@ let orderSummaryEditBtn = document.querySelector(".summary__btn-edit--order");
 let summaryCartOverlay = document.querySelector(".overlay");
 
 let currentCart;
+let yocoInline;
+let paymentIntentObj;
 
 let billingObj = (function (fullname, email, street, city) {
   let _firstname, _lastname, _email, _street, _city;
@@ -121,7 +124,8 @@ getProductsAsync().then((products) => {
 
 initializeCart();
 
-btnPayment.onclick = checkout;
+paymentForm.onsubmit = checkout;
+// btnPayment.onclick = checkout;
 productsContainer.onclick = addProductsToCart;
 summaryCloseBtn.onclick = closeCartSummary;
 headerCartBtn.onclick = openCartSummary;
@@ -135,29 +139,29 @@ billingForm.addEventListener("submit", submitBilling);
 
 billingEdit.addEventListener("click", () => {
   show(billingForm, nextStepShipping, nextStepPayment);
-  hide(billingSummary, shippingSummary, btnPayment);
+  hide(billingSummary, shippingSummary, btnPayment, paymentForm);
 });
 
 shippingEdit.addEventListener("click", () => {
   show(shippingForm, nextStepPayment);
-  hide(shippingSummary, btnPayment);
+  hide(shippingSummary, btnPayment, paymentForm);
 });
 shippingForm.onsubmit = submitShipping;
 orderSummaryEditBtn.onclick = openCartSummary;
 summaryCartOverlay.onclick = closeCartSummary;
 
-function initializeCart() {
-  createCart().then((cart) => {
-    currentCart = cart;
-    updateCartPriceUI(cart.subtotal.formatted);
-  });
+async function initializeCart() {
+  let res = await createCart();
+  console.log(res);
+  currentCart = res;
+  updateCartPriceUI(currentCart.subtotal.formatted);
 }
 
 function submitShipping(event) {
   event.preventDefault();
   updateFormObject(shippingObj, shippingForm);
   hide(shippingForm, nextStepPayment);
-  show(shippingSummary, btnPayment);
+  show(shippingSummary, btnPayment, paymentForm);
   initPaymentForm(currentCart.subtotal);
 }
 
@@ -174,8 +178,7 @@ function submitBilling(event) {
   } else {
     updateFormObject(shippingObj, billingForm);
     hide(nextStepShipping, nextStepPayment);
-    show(shippingSummary, btnPayment);
-    // console.log(currentCart);
+    show(shippingSummary, btnPayment, paymentForm);
     initPaymentForm(currentCart.subtotal);
   }
 }
@@ -218,10 +221,13 @@ function showCheckoutPage() {
   populateOrderSummaryUI(currentCart);
 }
 
-async function checkout() {
+async function checkout(event) {
+  event.preventDefault();
+  btnPayment.disabled = true;
   toggleCheckoutBtnSpinner();
-  let token = await generateCheckoutToken(currentCart.id);
-  let gatewayPaymentId = token.gateways.manual[0].id;
+
+  let tokenCommerceJs = await generateCheckoutToken(currentCart.id);
+  let gatewayPaymentId = tokenCommerceJs.gateways.manual[0].id;
   let items = currentCart.line_items.reduce((acc, item) => {
     acc[item.id] = {
       quantity: item.quantity,
@@ -261,7 +267,38 @@ async function checkout() {
     },
   };
 
-  let order = await captureOder(token.id, orderOptions);
+  let yocoToken;
+
+  try {
+    let res = await yocoInline.createToken();
+    btnPayment.disabled = false;
+    if (res.error) {
+      let errorMessage = res.error.message;
+      errorMessage && alert("error occured: " + errorMessage);
+      return;
+    } else {
+      yocoToken = res;
+      // alert("card successfully tokenised: " + yocoToken.id);
+    }
+  } catch (err) {
+    btnPayment.disabled = false;
+    alert("error occured: " + error);
+    return;
+  }
+
+  try {
+    let res = await axios.post("/api/make-payment", {
+      token: yocoToken.id,
+      amountInCents: paymentIntentObj.amountInCents,
+      currency: paymentIntentObj.currency,
+    });
+    // console.log(res);
+  } catch (err) {
+    alert(err.message);
+    return;
+  }
+
+  let order = await captureOder(tokenCommerceJs.id, orderOptions);
 
   let transactionId = order.transactions[0].id;
 
@@ -269,10 +306,10 @@ async function checkout() {
   try {
     let res = await axios.get(updateOrderUrl);
     toggleCheckoutBtnSpinner();
-    hide(btnPayment);
+    hide(btnPayment, paymentForm);
     show(btnPaymentComplete);
     await deleteCart();
-    initializeCart();
+    await initializeCart();
   } catch (err) {
     console.log(err);
   }
@@ -334,20 +371,23 @@ function updateCartState(res) {
 }
 
 function initPaymentForm(amount) {
-  document.querySelector(".btn-complete-payment span").textContent =
-    amount.formatted_with_symbol;
+  document.querySelector(
+    ".btn-complete-payment span"
+  ).textContent = `Pay ${amount.formatted_with_symbol}`;
 
   var sdk = new window.YocoSDK({
     publicKey: "pk_test_079a8dbeJn7lOKO66024",
   });
 
-  // Create a new dropin form instance
-  var inline = sdk.inline({
+  paymentIntentObj = {
     layout: "basic",
-    amountInCents: amount.raw * 10,
+    amountInCents: amount.raw * 100,
     currency: "ZAR",
-  });
+  };
+
+  // Create a new dropin form instance
+  yocoInline = sdk.inline(paymentIntentObj);
 
   // this ID matches the id of the element we created earlier.
-  inline.mount("#card-frame");
+  yocoInline.mount("#card-frame");
 }
