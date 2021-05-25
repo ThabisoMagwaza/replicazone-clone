@@ -621,6 +621,10 @@ button {
     display: none;
 }
 
+.btn-complete-payment span {
+    margin-left: 1rem;
+}
+
 .text-continue svg{
     width: 3rem;
     height: 3rem;
@@ -636,6 +640,9 @@ button {
     align-items: center
 }
 
+#card-frame {
+    grid-column: 1 / -1;
+}
 
 /* --------------------- Header ------------------------- */
 

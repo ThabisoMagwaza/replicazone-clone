@@ -158,6 +158,7 @@ function submitShipping(event) {
   updateFormObject(shippingObj, shippingForm);
   hide(shippingForm, nextStepPayment);
   show(shippingSummary, btnPayment);
+  initPaymentForm(currentCart.subtotal);
 }
 
 function submitBilling(event) {
@@ -174,6 +175,8 @@ function submitBilling(event) {
     updateFormObject(shippingObj, billingForm);
     hide(nextStepShipping, nextStepPayment);
     show(shippingSummary, btnPayment);
+    // console.log(currentCart);
+    initPaymentForm(currentCart.subtotal);
   }
 }
 
@@ -316,6 +319,7 @@ function closeCartSummary() {
   summaryCart.classList.add("cart-summary--hidden");
   hide(summaryCartOverlay);
   populateOrderSummaryUI(currentCart);
+  initPaymentForm(currentCart.subtotal);
 }
 
 function openCartSummary() {
@@ -327,4 +331,23 @@ function openCartSummary() {
 function updateCartState(res) {
   currentCart = res.cart;
   updateCartSummaryUI(currentCart);
+}
+
+function initPaymentForm(amount) {
+  document.querySelector(".btn-complete-payment span").textContent =
+    amount.formatted_with_symbol;
+
+  var sdk = new window.YocoSDK({
+    publicKey: "pk_test_079a8dbeJn7lOKO66024",
+  });
+
+  // Create a new dropin form instance
+  var inline = sdk.inline({
+    layout: "basic",
+    amountInCents: amount.raw * 10,
+    currency: "ZAR",
+  });
+
+  // this ID matches the id of the element we created earlier.
+  inline.mount("#card-frame");
 }

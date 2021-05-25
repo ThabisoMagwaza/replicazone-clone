@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="./img/logo.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;400;700&display=swap" rel="stylesheet">
+    <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
@@ -122,9 +123,14 @@
             <h6 class="checkout__heading summary__heading">Payment</h6>
           </div>
 
-          <button class="btn-cta mt-small btn-complete-payment hidden"> 
-            <div class="spinner hidden"></div> <span> Complete Payment </span>
-          </button>
+          <form class="checkout__form" id="payment-form" method="POST">
+              <div id="card-frame">
+                <!-- Yoco Inline form will be added here -->
+              </div>
+              <button id="pay-button" class="btn-cta mt-small btn-complete-payment hidden"> 
+                <div class="spinner hidden"></div>Pay <span></span>
+              </button>
+          </form>
 
           <button class="btn-cta mt-small btn-payment-completed hidden"> 
             <span class="text-completed">Payment successfuly Completed!</span>
