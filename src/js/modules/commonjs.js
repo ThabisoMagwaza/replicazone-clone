@@ -27,6 +27,10 @@ export async function updateCart(prodictId, quantity) {
   return await commerce.cart.update(prodictId, { quantity });
 }
 
+export async function deleteCart() {
+  return await commerce.cart.delete();
+}
+
 export async function generateCheckoutToken(cart_id) {
   return await commerce.checkout.generateTokenFrom("cart", cart_id);
 }

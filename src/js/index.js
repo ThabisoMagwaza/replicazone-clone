@@ -6,6 +6,7 @@ import {
   updateCart,
   generateCheckoutToken,
   captureOder,
+  deleteCart,
 } from "./modules/commonjs";
 import {
   updateProductsUI,
@@ -16,6 +17,7 @@ import {
 import { show, toggleVisble, hide } from "./modules/helpers";
 import axios from "axios";
 
+let btnPaymentComplete = document.querySelector(".btn-payment-completed");
 let btnPayment = document.querySelector(".btn-complete-payment");
 let useShipping = document.querySelector("#useshipping");
 let nextStepPayment = document.querySelector(".step-next--payment");
@@ -117,10 +119,7 @@ getProductsAsync().then((products) => {
   updateProductsUI(products);
 });
 
-createCart().then((cart) => {
-  currentCart = cart;
-  updateCartPriceUI(cart.subtotal.formatted);
-});
+initializeCart();
 
 btnPayment.onclick = checkout;
 productsContainer.onclick = addProductsToCart;
@@ -131,6 +130,7 @@ cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
 cartUpdateBtn.addEventListener("click", updateCartItem);
 checkoutBtn.onclick = handleCheckout;
 checkoutBackBtn.onclick = showShopping;
+btnPaymentComplete.onclick = showShopping;
 billingForm.addEventListener("submit", submitBilling);
 
 billingEdit.addEventListener("click", () => {
@@ -145,6 +145,13 @@ shippingEdit.addEventListener("click", () => {
 shippingForm.onsubmit = submitShipping;
 orderSummaryEditBtn.onclick = openCartSummary;
 summaryCartOverlay.onclick = closeCartSummary;
+
+function initializeCart() {
+  createCart().then((cart) => {
+    currentCart = cart;
+    updateCartPriceUI(cart.subtotal.formatted);
+  });
+}
 
 function submitShipping(event) {
   event.preventDefault();
@@ -192,7 +199,6 @@ function toggleCheckoutBtnSpinner() {
 
 async function handleCheckout() {
   showCheckoutPage();
-  // await checkout();
 }
 
 function showShopping() {
@@ -259,8 +265,11 @@ async function checkout() {
   let updateOrderUrl = `/api/update-order-status?orderId=${order.id}&transactionId=${transactionId}`;
   try {
     let res = await axios.get(updateOrderUrl);
-    console.log(res.data);
     toggleCheckoutBtnSpinner();
+    hide(btnPayment);
+    show(btnPaymentComplete);
+    await deleteCart();
+    initializeCart();
   } catch (err) {
     console.log(err);
   }
