@@ -11,10 +11,14 @@ async function updateOrderAsync(orderId, transactionId) {
   let body = {
     status: "complete",
   };
-
-  return await axios.put(url, body, {
-    headers,
-  });
+  try {
+    return await axios.put(url, body, {
+      headers,
+    });
+  } catch (err) {
+    console.log(err);
+    return err.data;
+  }
 }
 
 exports.handler = async function (event, context) {
@@ -23,6 +27,6 @@ exports.handler = async function (event, context) {
   let res = await updateOrderAsync(orderId, transactionId);
   return {
     statusCode: 200,
-    body: JSON.stringify({ status: "success", data: res.data }),
+    body: JSON.stringify({ status: "success" }),
   };
 };

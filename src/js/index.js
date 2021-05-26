@@ -125,17 +125,18 @@ getProductsAsync().then((products) => {
 initializeCart();
 
 paymentForm.onsubmit = checkout;
-// btnPayment.onclick = checkout;
 productsContainer.onclick = addProductsToCart;
 summaryCloseBtn.onclick = closeCartSummary;
 headerCartBtn.onclick = openCartSummary;
-
 cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
 cartUpdateBtn.addEventListener("click", updateCartItem);
 checkoutBtn.onclick = handleCheckout;
 checkoutBackBtn.onclick = showShopping;
 btnPaymentComplete.onclick = showShopping;
 billingForm.addEventListener("submit", submitBilling);
+shippingForm.onsubmit = submitShipping;
+orderSummaryEditBtn.onclick = openCartSummary;
+summaryCartOverlay.onclick = closeCartSummary;
 
 billingEdit.addEventListener("click", () => {
   show(billingForm, nextStepShipping, nextStepPayment);
@@ -146,13 +147,9 @@ shippingEdit.addEventListener("click", () => {
   show(shippingForm, nextStepPayment);
   hide(shippingSummary, btnPayment, paymentForm);
 });
-shippingForm.onsubmit = submitShipping;
-orderSummaryEditBtn.onclick = openCartSummary;
-summaryCartOverlay.onclick = closeCartSummary;
 
 async function initializeCart() {
   let res = await createCart();
-  console.log(res);
   currentCart = res;
   updateCartPriceUI(currentCart.subtotal.formatted);
 }
@@ -275,6 +272,8 @@ async function checkout(event) {
     if (res.error) {
       let errorMessage = res.error.message;
       errorMessage && alert("error occured: " + errorMessage);
+      btnPayment.disabled = false;
+      toggleCheckoutBtnSpinner();
       return;
     } else {
       yocoToken = res;
@@ -282,6 +281,7 @@ async function checkout(event) {
     }
   } catch (err) {
     btnPayment.disabled = false;
+    toggleCheckoutBtnSpinner();
     alert("error occured: " + error);
     return;
   }
@@ -294,6 +294,8 @@ async function checkout(event) {
     });
     // console.log(res);
   } catch (err) {
+    btnPayment.disabled = false;
+    toggleCheckoutBtnSpinner();
     alert(err.message);
     return;
   }
