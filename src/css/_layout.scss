@@ -1,0 +1,13 @@
+.container, 
+.header__content,
+.footer__content {
+    width: 60vw;
+    margin: 0 auto;
+}
+
+.container {
+    min-height: 84vh;
+    position: relative;
+
+    transform: translateY(10rem);
+}

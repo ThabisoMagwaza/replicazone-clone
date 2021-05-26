@@ -1,0 +1,32 @@
+/* --------------------- CUSTOM PROPERTIES ------------------------- */
+:root {
+    --color-secondary: #0aa7f5;
+    --color-logo: #429bfc;
+    --color-gray-light: #f7f7f8;
+    --color-danger: #9e2215;
+    --color-onBlue: #d9f0fc;
+    --color-blue: #0d59f2;
+    --color-modal-background: #f1f2f4;
+    --color-modal-background-light: #f7f7f8;
+}
+
+/* --------------------- RESETS ------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: inherit;
+    font-size: 62.5%; /*62.5 of 16px (browser default) = 10px = 1rem  */
+    font-weight: 400;
+    line-height: 1.5;
+    font-family: 'Mulish', sans-serif;
+}
+
+body {
+    font-size: 1.6rem;
+    position: relative;
+}

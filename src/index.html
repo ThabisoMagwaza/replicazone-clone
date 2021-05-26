@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;400;700&display=swap" rel="stylesheet">
     <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
-    <link rel="stylesheet" href="./css/style.scss" />
+    <link rel="stylesheet" href="./css/index.scss" />
   </head>
   <body>
     <div class="overlay hidden"></div>
@@ -178,21 +178,17 @@
     <header class="header">
       <div class="header__content">
         <a class="header__logo" href="#">
-          <img
-            src="./img/logo.svg"
-            alt="Replica Zone logo"
-            class="header__img"
-          />
+          <svg>
+            <use xlink:href="./img/sprite.svg#logo" />
+          </svg>
           ReplicaZone
         </a>
 
         <div class="header__buttons">
           <button class="header__cart">
-            <img
-              src="./img/cart.svg"
-              alt="Cart Logo"
-              class="header__cart-img"
-            />
+            <svg>
+              <use xlink:href="./img/sprite.svg#cart" />
+            </svg>
             <span class="header__price"
               >R<span class="header__value"></span
             ></span>
