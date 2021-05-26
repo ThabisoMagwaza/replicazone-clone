@@ -1,0 +1,21 @@
+.error {
+    position: fixed;
+    z-index: 500;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,10%);
+
+    background-color: rgb(255, 29, 9);
+    color: #fff;
+    font-size: 1.6rem;
+
+    padding: 1rem 3rem;
+    border-radius: 1000px;
+
+    -webkit-transform: transform;
+    transition: transform 0.3s ease-out;
+
+    &--hidden {
+        transform: translate(-50%,-110%);
+    }
+}

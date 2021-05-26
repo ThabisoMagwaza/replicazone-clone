@@ -13,6 +13,11 @@ import {
   updateCartPriceUI,
   updateCartSummaryUI,
   populateOrderSummaryUI,
+  openCartSummaryUI,
+  closeCartSummaryUI,
+  showCheckoutPageUI,
+  showShoppingPageUI,
+  showErrorUI,
 } from "./modules/updateUI";
 import { show, toggleVisble, hide } from "./modules/helpers";
 import axios from "axios";
@@ -31,16 +36,13 @@ let billingForm = document.querySelector(".checkout__form--billing");
 let shippingForm = document.querySelector(".checkout__form--shipping");
 let checkoutBtnText = document.querySelector(".btn-complete-payment span");
 let checkoutSpinner = document.querySelector(".btn-complete-payment .spinner");
-let checkoutPage = document.querySelector(".checkout");
 let checkoutBackBtn = document.querySelector(".checkout__btn-back");
 let checkoutBtn = document.querySelector(".btn-checkout");
 let cartSummaryRemoveBtn = document.querySelector(".cart-summary__items");
 let cartUpdateBtn = document.querySelector(".cart-summary__items");
 let headerCartBtn = document.querySelector(".header__cart");
 let summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
-let summaryCart = document.querySelector(".cart-summary");
 let productsContainer = document.querySelector(".container");
-let shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 let orderSummaryEditBtn = document.querySelector(".summary__btn-edit--order");
 let summaryCartOverlay = document.querySelector(".overlay");
 
@@ -118,25 +120,19 @@ let shippingObj = (function (street, city) {
   document.querySelector(".summary--shipping .city")
 );
 
-getProductsAsync().then((products) => {
-  updateProductsUI(products);
-});
-
-initializeCart();
-
 paymentForm.onsubmit = checkout;
 productsContainer.onclick = addProductsToCart;
-summaryCloseBtn.onclick = closeCartSummary;
-headerCartBtn.onclick = openCartSummary;
+summaryCloseBtn.onclick = () => closeCartSummaryUI(currentCart);
+headerCartBtn.onclick = () => openCartSummaryUI(currentCart);
 cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
 cartUpdateBtn.addEventListener("click", updateCartItem);
-checkoutBtn.onclick = handleCheckout;
-checkoutBackBtn.onclick = showShopping;
-btnPaymentComplete.onclick = showShopping;
+checkoutBtn.onclick = openCheckoutPage;
+checkoutBackBtn.onclick = showShoppingPageUI;
+btnPaymentComplete.onclick = showShoppingPageUI;
 billingForm.addEventListener("submit", submitBilling);
 shippingForm.onsubmit = submitShipping;
-orderSummaryEditBtn.onclick = openCartSummary;
-summaryCartOverlay.onclick = closeCartSummary;
+orderSummaryEditBtn.onclick = () => openCartSummaryUI(currentCart);
+summaryCartOverlay.onclick = () => closeCartSummaryUI(currentCart);
 
 billingEdit.addEventListener("click", () => {
   show(billingForm, nextStepShipping, nextStepPayment);
@@ -148,10 +144,23 @@ shippingEdit.addEventListener("click", () => {
   hide(shippingSummary, btnPayment, paymentForm);
 });
 
-async function initializeCart() {
+window.onload = init;
+
+async function initializeCartAsync() {
   let res = await createCart();
   currentCart = res;
   updateCartPriceUI(currentCart.subtotal.formatted);
+}
+
+async function populateProductsAsync() {
+  let products = await getProductsAsync();
+  showErrorUI("Error loading products!");
+  updateProductsUI(products);
+}
+
+async function init() {
+  await populateProductsAsync();
+  await initializeCartAsync();
 }
 
 function submitShipping(event) {
@@ -200,22 +209,11 @@ function toggleCheckoutBtnSpinner() {
   checkoutSpinner.classList.toggle("hidden");
 }
 
-async function handleCheckout() {
-  showCheckoutPage();
-}
-
-function showShopping() {
-  shoppingPageElements.forEach((el) => el.classList.remove("hidden"));
-  checkoutPage.classList.add("checkout--hidden");
-  closeCartSummary();
-}
-
-function showCheckoutPage() {
-  checkoutPage.classList.remove("checkout--hidden");
-  shoppingPageElements.forEach((el) => el.classList.add("hidden"));
-  summaryCart.classList.remove("hidden");
-  closeCartSummary();
+function openCheckoutPage() {
+  showCheckoutPageUI();
+  closeCartSummaryUI(currentCart);
   populateOrderSummaryUI(currentCart);
+  initPaymentForm(currentCart.subtotal);
 }
 
 async function checkout(event) {
@@ -334,37 +332,21 @@ async function updateCartItem(event) {
   populateOrderSummaryUI(currentCart);
 }
 
-function removeItemFromCart(event) {
+async function removeItemFromCart(event) {
   if (!event.target.closest(".summary__item-btn-delete")) return;
   let productId = event.target.closest(".summary__item-btn-delete").dataset
     .prodictid;
-  removeFromCart(productId).then((res) => {
-    updateCartState(res);
-  });
+  let res = await removeFromCart(productId);
+  updateCartState(res);
 }
 
-function addProductsToCart(event) {
+async function addProductsToCart(event) {
   if (!event.target.classList.contains("card__btn")) return;
-  openCartSummary();
+  openCartSummaryUI(currentCart);
   let productId = event.target.dataset.productid;
   let quantity = document.querySelector(`.${productId}`).value;
-  addToCart(productId, quantity).then((res) => {
-    updateCartState(res);
-  });
-}
-
-function closeCartSummary() {
-  updateCartPriceUI(currentCart.subtotal.formatted);
-  summaryCart.classList.add("cart-summary--hidden");
-  hide(summaryCartOverlay);
-  populateOrderSummaryUI(currentCart);
-  initPaymentForm(currentCart.subtotal);
-}
-
-function openCartSummary() {
-  updateCartSummaryUI(currentCart);
-  summaryCart.classList.remove("cart-summary--hidden");
-  show(summaryCartOverlay);
+  let res = await addToCart(productId, quantity);
+  updateCartState(res);
 }
 
 function updateCartState(res) {
