@@ -1,0 +1,15 @@
+.cart-summary.cart-summary--hidden
+  h3.cart-summary__header
+    | Cart Summary
+    button.cart-summary-close-btn
+      img.cart-summary-close-img(src='./img/cross.svg' alt='')
+  .cart-summary__items
+  .cart-summary__buttons
+    .cart-summary__total.mb-small
+      | Total 
+      span.cart-summary__value
+    button.btn.btn-cta.btn-checkout.mb-medium
+      | Checkout 
+      svg.btn-cta__icon
+        use(xlink:href='./img/arrow.svg#arrow')
+    button.btn.btn-detailed-cart View detailed cart
