@@ -146,21 +146,30 @@ shippingEdit.addEventListener("click", () => {
 
 window.onload = init;
 
-async function initializeCartAsync() {
-  let res = await createCart();
-  currentCart = res;
-  updateCartPriceUI(currentCart.subtotal.formatted);
-}
-
-async function populateProductsAsync() {
-  let products = await getProductsAsync();
-  showErrorUI("Error loading products!");
-  updateProductsUI(products);
-}
-
 async function init() {
   await populateProductsAsync();
   await initializeCartAsync();
+}
+
+async function initializeCartAsync() {
+  try {
+    let res = await createCart();
+    currentCart = res;
+    updateCartPriceUI(currentCart.subtotal.formatted);
+  } catch (err) {
+    showErrorUI("Error creating cart! Please reload page.");
+    console.error(err);
+  }
+}
+
+async function populateProductsAsync() {
+  try {
+    let products = await getProductsAsync();
+    updateProductsUI(products);
+  } catch (err) {
+    showErrorUI("Error loading catalog! Please try again later.");
+    console.error(err);
+  }
 }
 
 function submitShipping(event) {
