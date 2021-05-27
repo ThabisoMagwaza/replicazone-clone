@@ -250,19 +250,13 @@ async function checkout(event) {
     btnPayment.disabled = false;
     if (res.error) {
       let errorMessage = res.error.message;
-      errorMessage && alert("error occured: " + errorMessage);
-      btnPayment.disabled = false;
-      toggleCheckoutBtnSpinner();
-      return;
+      return handleApiError(errorMessage);
     } else {
       yocoToken = res;
       // alert("card successfully tokenised: " + yocoToken.id);
     }
   } catch (err) {
-    btnPayment.disabled = false;
-    toggleCheckoutBtnSpinner();
-    alert("error occured: " + error);
-    return;
+    return handleApiError(errorMessage);
   }
 
   try {
@@ -289,13 +283,18 @@ async function checkout(event) {
   let updateOrderUrl = `/api/update-order-status?orderId=${order.id}&transactionId=${transactionId}`;
   try {
     let res = await axios.get(updateOrderUrl);
-    toggleCheckoutBtnSpinner();
     hide(btnPayment, paymentForm);
     show(btnPaymentComplete);
+    toggleCheckoutBtnSpinner();
+  } catch (err) {
+    return handleApiError(err);
+  }
+
+  try {
     await deleteCart();
     await initializeCart();
   } catch (err) {
-    return handleApiError(err);
+    showErrorUI("Error reseting cart. Please hard reflesh (ctr/cmd + F5)");
   }
 }
 
