@@ -2,6 +2,7 @@ import createCard from "./cardTemplate";
 import createCartSummaryCard from "./cartSummaryTemplate";
 import anime from "animejs/lib/anime.es.js";
 import createOrderSummaryItem from "./orderSummaryItemTemplate";
+import { initPaymentForm } from "./checkoutPage";
 import { show, toggleVisble, hide } from "./helpers";
 
 let cardsContainer = document.querySelector(".container");
@@ -77,6 +78,7 @@ export function closeCartSummaryUI(cart) {
   summaryCart.classList.add("cart-summary--hidden");
   hide(summaryCartOverlay);
   populateOrderSummaryUI(cart);
+  initPaymentForm(cart);
 }
 
 export function showCheckoutPageUI() {
@@ -85,10 +87,10 @@ export function showCheckoutPageUI() {
   summaryCart.classList.remove("hidden");
 }
 
-export function showShoppingPageUI() {
+export async function showShoppingPageUI(cart) {
   shoppingPageElements.forEach((el) => el.classList.remove("hidden"));
   checkoutPage.classList.add("checkout--hidden");
-  closeCartSummaryUI(currentCart);
+  closeCartSummaryUI(cart);
 }
 
 export function showErrorUI(message) {
