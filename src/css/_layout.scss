@@ -11,3 +11,28 @@
 
     transform: translateY(10rem);
 }
+
+
+@media only screen and (max-width: 1200px)  {
+    .container, 
+    .header__content,
+    .footer__content {
+        width: 70vw;
+    }
+}
+
+@media only screen and (max-width: 1000px)  {
+    .container, 
+    .header__content,
+    .footer__content {
+        width: 80vw;
+    }
+}
+
+@media only screen and (max-width: 800px)  {
+    .container, 
+    .header__content,
+    .footer__content {
+        width: 85vw;
+    }
+}
