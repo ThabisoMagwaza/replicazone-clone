@@ -48,8 +48,7 @@ async function initializeCartAsync() {
     currentCart = res;
     updateCartPriceUI(currentCart.subtotal.formatted);
   } catch (err) {
-    showErrorUI("Error creating cart! Please reload page.");
-    console.error(err);
+    handleApiError(err, "Error creating cart! Please reload page.");
   }
 }
 
@@ -58,8 +57,7 @@ async function populateProductsAsync() {
     let products = await getProductsAsync();
     updateProductsUI(products);
   } catch (err) {
-    showErrorUI("Error loading catalog! Please try again later.");
-    console.error(err);
+    handleApiError(err, "Error loading catalog! Please try again later.");
   }
 }
 
@@ -69,23 +67,34 @@ async function updateCartItem(event) {
   let currentItem = currentCart.line_items.find(
     (item) => item.id === dataset.productid
   );
-
-  let res = await updateCart(
-    dataset.productid,
-    dataset.action == "inc"
-      ? currentItem.quantity + 1
-      : currentItem.quantity - 1
-  );
-  updateCartState(res);
-  populateOrderSummaryUI(currentCart);
+  try {
+    let res = await updateCart(
+      dataset.productid,
+      dataset.action == "inc"
+        ? currentItem.quantity + 1
+        : currentItem.quantity - 1
+    );
+    updateCartState(res);
+    populateOrderSummaryUI(currentCart);
+  } catch (err) {
+    handleApiError(err, "Error updating cart. Please try again later.");
+  }
 }
 
 async function removeItemFromCart(event) {
   if (!event.target.closest(".summary__item-btn-delete")) return;
   let productId = event.target.closest(".summary__item-btn-delete").dataset
     .prodictid;
-  let res = await removeFromCart(productId);
-  updateCartState(res);
+
+  try {
+    let res = await removeFromCart(productId);
+    updateCartState(res);
+  } catch (err) {
+    handleApiError(
+      err,
+      "Error removing product from cart. Please try again later."
+    );
+  }
 }
 
 async function addProductsToCart(event) {
@@ -93,11 +102,24 @@ async function addProductsToCart(event) {
   openCartSummaryUI(currentCart);
   let productId = event.target.dataset.productid;
   let quantity = document.querySelector(`.${productId}`).value;
-  let res = await addToCart(productId, quantity);
-  updateCartState(res);
+
+  try {
+    let res = await addToCart(productId, quantity);
+    updateCartState(res);
+  } catch (err) {
+    handleApiError(
+      err,
+      "Error adding product to cart. Please try again later."
+    );
+  }
 }
 
 function updateCartState(res) {
   currentCart = res.cart;
   updateCartSummaryUI(currentCart);
+}
+
+function handleApiError(error, message) {
+  console.error(error);
+  showErrorUI(message);
 }
