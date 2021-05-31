@@ -11,22 +11,27 @@ async function updateOrderAsync(orderId, transactionId) {
   let body = {
     status: "complete",
   };
-  try {
-    return await axios.put(url, body, {
-      headers,
-    });
-  } catch (err) {
-    console.log(err);
-    return err.data;
-  }
+  return await axios.put(url, body, {
+    headers,
+  });
 }
 
 exports.handler = async function (event, context) {
   let { orderId, transactionId } = event.queryStringParameters;
-
-  let res = await updateOrderAsync(orderId, transactionId);
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ status: "success" }),
-  };
+  try {
+    let res = await updateOrderAsync(orderId, transactionId);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ status: "success" }),
+    };
+  } catch (err) {
+    console.log(err.response);
+    // TODO: Send email to admint alerting them that they should update the order manually
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        status: "success",
+      }),
+    };
+  }
 };

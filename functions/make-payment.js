@@ -2,8 +2,7 @@ const axios = require("axios").default;
 
 async function makePayment(reqData) {
   let url = `https://online.yoco.com/v1/charges/`;
-  // let apiKey = "sk_test_fd7dc816QmJEDnDc15d4b7d88101";
-  let apiKey = "sk_test_fd7dc816QmJEDnDc15d4b7d881";
+  let apiKey = "sk_test_fd7dc816QmJEDnDc15d4b7d88101";
   let headers = {
     "X-Auth-Secret-Key": apiKey,
     "Content-Type": "application/json",
