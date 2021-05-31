@@ -16,7 +16,7 @@
 
 .footer {
     border-top: solid 1px #ddd;
-    padding: clamp(1rem,5vw,5rem);
+    padding: clamp(2rem,5vw,5rem);
     background-color: #fafafa;
     border-top: 1px solid #eaeaea;
 
@@ -31,6 +31,10 @@
     .header__content,
     .footer__content {
         width: clamp(30rem,95vw,100rem);
+    }
+
+    .container {
+        padding-bottom: 5rem;
     }
 }
 
