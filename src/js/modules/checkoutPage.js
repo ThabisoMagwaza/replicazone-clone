@@ -12,6 +12,7 @@ import {
   generateCheckoutToken,
   deleteCart,
   captureOder,
+  getProvinces,
 } from "./commonjs";
 import { show, hide } from "./helpers";
 import axios from "axios";
@@ -32,6 +33,7 @@ let checkoutBtnText = document.querySelector(".btn-complete-payment span");
 let checkoutSpinner = document.querySelector(".btn-complete-payment .spinner");
 let orderSummaryEditBtn = document.querySelector(".summary__btn-edit--order");
 let checkoutBackBtn = document.querySelector(".checkout__btn-back");
+let provinceOptions = document.querySelectorAll(".provinces");
 
 let yocoInline;
 let paymentIntentObj;
@@ -124,10 +126,24 @@ shippingEdit.addEventListener("click", () => {
   hide(shippingSummary, btnPayment, paymentForm);
 });
 
-export function openCheckoutPageUI(cart) {
+export async function openCheckoutPageUI(cart) {
   showCheckoutPageUI();
   closeCartSummaryUI(cart);
   populateOrderSummaryUI(cart);
+
+  try {
+    let country = "ZA";
+    let res = await getProvinces(country);
+    provinceOptions.innerHTML = "";
+    provinceOptions.forEach((el) => {
+      el.insertAdjacentHTML(
+        "afterbegin",
+        `<option disabled selected value> -- Select an option -- </option>\n${res.html}`
+      );
+    });
+  } catch (err) {
+    showErrorUI("Error loading list of provinces. Please reload page!");
+  }
 
   currentCart = cart;
 }
@@ -278,7 +294,7 @@ async function checkout(event) {
     order = await captureOder(tokenCommerceJs.id, orderOptions);
   } catch (err) {
     return handleApiError(
-      err.response,
+      err,
       "Error creating the order. Please contact support!"
     );
   }

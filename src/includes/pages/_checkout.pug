@@ -31,7 +31,7 @@
           input#billing-email(type='email' name='email' required='')
         .checkout__form-group.checkout__province
           label(for='#billing-province') Province
-          input#billing-province(type='text' name='province')
+          select#billing-province.provinces(type='select' name='province' required)
         .checkout__form-group.checkout__city
           label(for='#billing-city') City
           input#billing-city(type='text' name='city' required='')
@@ -53,7 +53,7 @@
         h6.checkout__heading Shipping
         .checkout__form-group.checkout__province
           label(for='#shipping__province') Province
-          input#shipping__province(type='text' name='province')
+          select#shipping__province.provinces(type='text' name='province' required)
         .checkout__form-group.checkout__city
           label(for='#shipping__city') City
           input#shipping__city(type='text' name='city' required='')

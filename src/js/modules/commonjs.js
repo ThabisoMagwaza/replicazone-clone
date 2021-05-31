@@ -38,3 +38,7 @@ export async function generateCheckoutToken(cart_id) {
 export async function captureOder(token, checkoutObj) {
   return await commerce.checkout.capture(token, checkoutObj);
 }
+
+export async function getProvinces(country) {
+  return await commerce.services.localeListSubdivisions(country);
+}
