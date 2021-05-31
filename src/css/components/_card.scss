@@ -3,6 +3,7 @@
 }
 
 .card {
+    width: 100%;
     display: grid;
     grid-template-columns: 55% 1fr;
     grid-template-rows: max-content repeat(2,min-content);
