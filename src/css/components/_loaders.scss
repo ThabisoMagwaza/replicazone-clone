@@ -1,0 +1,69 @@
+.spinner {
+    width:2.5rem;
+    height:2.5rem;
+    border-radius:50%;
+    background:conic-gradient(#0000 10%,#fff);
+    -webkit-mask:radial-gradient(farthest-side,#0000 calc(100% - 5px),#000 0);
+    animation:s3 .5s infinite linear;
+  }
+  @keyframes s3 {to{transform: rotate(1turn)}}
+
+.blob {
+    background-color: var(--color-logo);
+    border-radius: 50%;
+}
+
+.blob--1 {
+    width: 10rem;
+    height: 10rem;
+
+    animation: rotateLargeCircle 2s ease-in-out infinite alternate-reverse;
+}
+
+.blob--2 {
+    width: 5rem;
+    height: 5rem;
+    animation: rotateSmall 2s ease-in-out infinite alternate-reverse;
+}   
+
+@keyframes rotateSmall {
+    0% {
+        transform: translate(5rem,-2rem);
+    }
+
+    50% {
+        transform: translate(-4rem,-13rem);
+    }
+
+    100% {
+        transform: translate(-4rem,-2rem);
+    }
+}
+
+@keyframes rotateLargeCircle {
+    0% {
+        transform: translate(0,0);
+    }
+
+    50% {
+        transform: translate(0,2rem);
+    }
+}
+
+.loader {
+    filter: url("../img/goo.svg#goo");
+    padding: 5rem;
+
+    display: grid;
+    place-items: center;
+}
+
+.loader-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    display: grid;
+    place-items: center;
+}
