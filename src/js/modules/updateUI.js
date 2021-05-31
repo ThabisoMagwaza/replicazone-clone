@@ -95,6 +95,6 @@ export async function showShoppingPageUI(cart) {
 
 export function showErrorUI(message) {
   errorUI.textContent = message;
-  errorUI.classList.remove("error--hidden");
+  errorUI.classList.remove("error--hidden", "hidden");
   setTimeout(() => errorUI.classList.add("error--hidden"), 3000);
 }

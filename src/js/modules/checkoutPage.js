@@ -244,20 +244,23 @@ async function checkout(event) {
   };
 
   let yocoToken;
+  let order;
+  let paymentErrorMessage = "Error processing payment. Please contact support!";
 
   try {
     let res = await yocoInline.createToken();
     btnPayment.disabled = false;
     if (res.error) {
       let errorMessage = res.error.message;
-      return handleApiError(errorMessage);
+      return handleApiError(res, errorMessage);
     } else {
       yocoToken = res;
-      // alert("card successfully tokenised: " + yocoToken.id);
     }
   } catch (err) {
-    return handleApiError(errorMessage);
+    return handleApiError(err.response, paymentErrorMessage);
   }
+
+  // 1) Process payment
 
   try {
     let res = await axios.post("/api/make-payment", {
@@ -265,18 +268,22 @@ async function checkout(event) {
       amountInCents: paymentIntentObj.amountInCents,
       currency: paymentIntentObj.currency,
     });
-    // console.log(res);
   } catch (err) {
-    return handleApiError(err);
+    return handleApiError(err.response, paymentErrorMessage);
   }
 
-  let order;
+  // 2) Create order
 
   try {
     order = await captureOder(tokenCommerceJs.id, orderOptions);
   } catch (err) {
-    return handleApiError(err);
+    return handleApiError(
+      err.response,
+      "Error creating the order. Please contact support!"
+    );
   }
+
+  // 3) capture order
 
   let transactionId = order.transactions[0].id;
 
@@ -287,7 +294,10 @@ async function checkout(event) {
     show(btnPaymentComplete);
     toggleCheckoutBtnSpinner();
   } catch (err) {
-    return handleApiError(err);
+    return handleApiError(
+      err.response,
+      "Error capturing successful payment. Please contact support!"
+    );
   }
 
   try {
@@ -314,9 +324,9 @@ function toggleCheckoutBtnSpinner() {
   checkoutSpinner.classList.toggle("hidden");
 }
 
-function handleApiError(error) {
+function handleApiError(err, message) {
+  console.log(err);
   btnPayment.disabled = false;
   toggleCheckoutBtnSpinner();
-  showErrorUI(`Checkout error: ${error.message}`);
-  console.error(error);
+  showErrorUI(`Checkout error: ${message}`);
 }

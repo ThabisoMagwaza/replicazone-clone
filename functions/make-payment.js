@@ -2,25 +2,31 @@ const axios = require("axios").default;
 
 async function makePayment(reqData) {
   let url = `https://online.yoco.com/v1/charges/`;
-  let apiKey = "sk_test_fd7dc816QmJEDnDc15d4b7d88101";
+  // let apiKey = "sk_test_fd7dc816QmJEDnDc15d4b7d88101";
+  let apiKey = "sk_test_fd7dc816QmJEDnDc15d4b7d881";
   let headers = {
     "X-Auth-Secret-Key": apiKey,
     "Content-Type": "application/json",
     Accept: "application/json",
   };
-  try {
-    return await axios.post(url, reqData, {
-      headers,
-    });
-  } catch (err) {
-    console.log(err);
-  }
+
+  return await axios.post(url, reqData, {
+    headers,
+  });
 }
 
 exports.handler = async function (event, context) {
-  let res = await makePayment(event.body);
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ data: res.data }),
-  };
+  try {
+    let res = await makePayment(event.body);
+    return {
+      statusCode: res.status,
+      body: JSON.stringify({ data: res.data }),
+    };
+  } catch (err) {
+    console.log("Error 🔥:", err.response);
+    return {
+      statusCode: err.response.status,
+      body: JSON.stringify(err.response.data),
+    };
+  }
 };
