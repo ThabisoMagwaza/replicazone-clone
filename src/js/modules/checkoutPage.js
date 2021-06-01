@@ -113,7 +113,10 @@ billingForm.onsubmit = submitBilling;
 shippingForm.onsubmit = submitShipping;
 paymentForm.onsubmit = checkout;
 checkoutBackBtn.onclick = () => showShoppingPageUI(currentCart);
-btnPaymentComplete.onclick = () => showShoppingPageUI(currentCart);
+btnPaymentComplete.onclick = () => {
+  resetCheckoutForm();
+  showShoppingPageUI(currentCart);
+};
 orderSummaryEditBtn.onclick = () => openCartSummaryUI(currentCart);
 
 billingEdit.addEventListener("click", () => {
@@ -345,4 +348,17 @@ function handleApiError(err, message) {
   btnPayment.disabled = false;
   toggleCheckoutBtnSpinner();
   showErrorUI(`Checkout error: ${message}`);
+}
+
+function resetCheckoutForm() {
+  billingForm.reset();
+  shippingForm.reset();
+  hide(
+    billingSummary,
+    shippingForm,
+    shippingSummary,
+    paymentForm,
+    btnPaymentComplete
+  );
+  show(billingForm, nextStepShipping, nextStepPayment);
 }
