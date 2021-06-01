@@ -4,3 +4,69 @@ button {
     border: none;
     cursor: pointer;
 }
+
+// cta
+.btn-cta {
+    background-color: #1a4db3;
+    padding: 2rem;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 400;
+    border-radius: 5px;
+    letter-spacing: 1px;
+
+    height: 1.5vw;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+
+    
+    &:hover {
+        background-color: #0d59f2;
+        box-shadow: 0 10px 4px -8px rgba(0,0,0,.5);
+        transform: translateY(-3px);
+    }
+
+    &__icon {
+        width: 2rem;
+        height: 2rem;
+        transform: rotate(180deg) translateX(-2rem);
+        transition: transform .2s;
+    }
+
+    &:hover &__icon {
+        transform: rotate(180deg) translate(-2.5rem);
+    }
+}
+
+// payment
+
+.btn-payment-completed {
+    background-color: rgb(28, 184, 54);
+
+    & .text-continue {
+        display: none;
+    }
+
+    &:hover .text-completed {
+        display: none;
+    }
+    
+    &:hover .text-continue {
+        display: flex;
+        align-items: center
+    }
+}
+
+.btn-complete-payment span {
+    margin-left: 1rem;
+}
+
+.text-continue svg{
+    width: 3rem;
+    height: 3rem;
+    margin-right: 1rem;
+}
+

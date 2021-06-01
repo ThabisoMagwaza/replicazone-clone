@@ -404,69 +404,6 @@
 }
 
 
-
-.btn-cta {
-    background-color: #1a4db3;
-    padding: 2rem;
-    color: #fff;
-    font-size: 1.4rem;
-    font-weight: 400;
-    border-radius: 5px;
-    letter-spacing: 1px;
-
-    height: 1.5vw;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all .2s;
-}
-
-.btn-cta:hover {
-    background-color: #0d59f2;
-    box-shadow: 0 10px 4px -8px rgba(0,0,0,.5);
-    transform: translateY(-3px);
-}
-
-.btn-cta__icon {
-    width: 2rem;
-    height: 2rem;
-    transform: rotate(180deg) translateX(-2rem);
-    transition: transform .2s;
-}
-
-.btn-cta:hover .btn-cta__icon {
-    transform: rotate(180deg) translate(-2.5rem);
-}
-
-.btn-payment-completed {
-    background-color: rgb(28, 184, 54);
-}
-
-.btn-payment-completed .text-continue {
-    display: none;
-}
-
-.btn-complete-payment span {
-    margin-left: 1rem;
-}
-
-.text-continue svg{
-    width: 3rem;
-    height: 3rem;
-    margin-right: 1rem;
-}
-
-.btn-payment-completed:hover .text-completed {
-    display: none;
-}
-
-.btn-payment-completed:hover .text-continue {
-    display: flex;
-    align-items: center
-}
-
-
 @media only screen and (max-width: 1000px) {
     .checkout__container {
         width: 90vw;
@@ -477,12 +414,12 @@
     }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
     .checkout__container {
         justify-content: stretch;
         grid-template-columns: auto;
 
-        padding-bottom: 5rem;
+        padding: 0 0 5rem 1rem;
     }
 
     .order-summary {
