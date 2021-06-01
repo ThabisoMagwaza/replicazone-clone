@@ -2,5 +2,6 @@ node_modules
 .cache
 bundle.*
 dist
+.env
 # Local Netlify folder
 .netlify

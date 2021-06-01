@@ -1,8 +1,9 @@
 const axios = require("axios").default;
+require("dotenv").config();
 
 async function updateOrderAsync(orderId, transactionId) {
   let url = `https://api.chec.io/v1/orders/${orderId}/transactions/${transactionId}`;
-  let apiKey = "sk_27307054eb95b7ae240c6c791b9a06dfd0e531551b23e";
+  let apiKey = process.env.CHECH_SECRETE_KEY;
   let headers = {
     "X-Authorization": apiKey,
     "Content-Type": "application/json",
