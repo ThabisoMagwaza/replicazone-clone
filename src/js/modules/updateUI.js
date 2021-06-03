@@ -17,6 +17,7 @@ let summaryCart = document.querySelector(".cart-summary");
 let checkoutPage = document.querySelector(".checkout");
 let shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 let errorUI = document.querySelector(".error");
+let body = document.querySelector("body");
 
 export function updateProductsUI(products) {
   let altenator = 0;
@@ -70,12 +71,14 @@ export function populateOrderSummaryUI(cart) {
 export function openCartSummaryUI(cart) {
   updateCartSummaryUI(cart);
   summaryCart.classList.remove("cart-summary--hidden");
+  body.classList.add("no-overflow-y");
   show(summaryCartOverlay);
 }
 
 export function closeCartSummaryUI(cart) {
   updateCartPriceUI(cart.subtotal.formatted);
   summaryCart.classList.add("cart-summary--hidden");
+  body.classList.remove("no-overflow-y");
   hide(summaryCartOverlay);
   populateOrderSummaryUI(cart);
   initPaymentForm(cart);
