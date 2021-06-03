@@ -60,13 +60,59 @@ button {
     }
 }
 
-.btn-complete-payment span {
-    margin-left: 1rem;
+.btn-complete-payment {
+
+    --stagger: 0.1s;
+    --anim-duration: 1s;
+
+    .text {
+        margin-left: 1rem;
+    }
+
+    .dot {
+        display: inline-block;
+
+        &:first-child {
+            margin-left: 5px;
+        }
+
+        &-1 {
+            animation: dotAnimation var(--anim-duration) ease-in infinite  ;
+        }
+        &-2 {
+            animation: dotAnimation var(--anim-duration) ease-in infinite var(--stagger);
+        }
+        &-3 {
+            animation: dotAnimation var(--anim-duration) ease-in infinite calc(var(--stagger) * 2);
+        }
+    }
+
 }
 
 .text-continue svg{
     width: 3rem;
     height: 3rem;
     margin-right: 1rem;
+}
+
+@keyframes dotAnimation {
+    0% {
+        transform: translateY(0px);
+    }
+    10% {
+        transform: translateY(-7px);
+    }
+    30% {
+        transform: translateY(0px);
+    }
+    // 50% {
+    //     transform: translateY(0px);
+    // }
+    // 75% {
+    //     transform: translateY(0px);
+    // }
+    100% {
+        transform: translateY(0px);
+    }
 }
 

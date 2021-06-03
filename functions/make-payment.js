@@ -4,7 +4,6 @@ require("dotenv").config();
 async function makePayment(reqData) {
   let url = `https://online.yoco.com/v1/charges/`;
   let apiKey = process.env.YOCO_SECRETE_KEY;
-  console.log(apiKey);
   let headers = {
     "X-Auth-Secret-Key": apiKey,
     "Content-Type": "application/json",

@@ -48,7 +48,10 @@ async function initializeCartAsync() {
     currentCart = res;
     updateCartPriceUI(currentCart.subtotal.formatted);
   } catch (err) {
-    handleApiError(err, "Error creating cart! Please reload page.");
+    handleApiError(
+      err,
+      "Error creating cart! Please reload page (ctr/cmd + F5)."
+    );
   }
 }
 

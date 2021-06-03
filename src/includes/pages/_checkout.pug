@@ -45,7 +45,6 @@
           label(for='#useshipping') Use as shipping address
           input#useshipping(type='checkbox' name='useshipping' checked='')
         button.btn-cta.mt-small(type='submit')
-          .spinner.hidden
           span  Continue to shipping 
       .numbered-step.step-next.step-next--shipping
         h6.checkout__heading.summary__heading Shipping
@@ -64,7 +63,6 @@
           label(for='#shipping__zipcode') Postal/ZIP code
           input#shipping__zipcode(type='text' name='zipcode')
         button.btn-cta.mt-small(type='submit')
-          .spinner.hidden
           span  Continue to Payment 
       .summary.summary--shipping.hidden
         .summary__check
@@ -87,8 +85,11 @@
         #card-frame
           // Yoco Inline form will be added here
         button#pay-button.btn-cta.mt-small.btn-complete-payment.hidden
-          .spinner.hidden
-          span
+          .spinner.hidden processing payment
+            span.dot.dot-1 .
+            span.dot.dot-2 .
+            span.dot.dot-3 .
+          span.text
       button.btn-cta.mt-small.btn-payment-completed.hidden
         span.text-completed Payment successfuly Completed!
         span.text-continue

@@ -29,7 +29,7 @@ let billingEdit = document.querySelector(".summary__btn-edit--billing");
 let shippingEdit = document.querySelector(".summary__btn-edit--shipping");
 let billingSummary = document.querySelector(".summary--billing");
 let shippingSummary = document.querySelector(".summary--shipping");
-let checkoutBtnText = document.querySelector(".btn-complete-payment span");
+let checkoutBtnText = document.querySelector(".btn-complete-payment .text");
 let checkoutSpinner = document.querySelector(".btn-complete-payment .spinner");
 let orderSummaryEditBtn = document.querySelector(".summary__btn-edit--order");
 let checkoutBackBtn = document.querySelector(".checkout__btn-back");
@@ -155,7 +155,7 @@ export function initPaymentForm(cart) {
   currentCart = cart;
 
   document.querySelector(
-    ".btn-complete-payment span"
+    ".btn-complete-payment .text"
   ).textContent = `Pay ${cart.subtotal.formatted_with_symbol}`;
 
   var sdk = new window.YocoSDK({
