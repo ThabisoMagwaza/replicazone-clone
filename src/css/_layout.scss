@@ -12,6 +12,14 @@
     transform: translateY(10rem);
 }
 
+.content-no-scroll {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: hidden;
+}
 
 .footer {
     border-top: solid 1px #ddd;

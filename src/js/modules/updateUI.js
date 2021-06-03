@@ -17,7 +17,7 @@ let summaryCart = document.querySelector(".cart-summary");
 let checkoutPage = document.querySelector(".checkout");
 let shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 let errorUI = document.querySelector(".error");
-let body = document.querySelector("body");
+let content = document.querySelector(".content");
 let emptyCartUI = document.querySelector(".cart-summary__empty");
 let cartSummaryCheckout = document.querySelector(".cart-summary__buttons");
 
@@ -74,14 +74,14 @@ export function populateOrderSummaryUI(cart) {
 export function openCartSummaryUI(cart) {
   updateCartSummaryUI(cart);
   summaryCart.classList.remove("cart-summary--hidden");
-  body.classList.add("no-overflow-y");
+  content.classList.add("content-no-scroll");
   show(summaryCartOverlay);
 }
 
 export function closeCartSummaryUI(cart) {
   updateCartPriceUI(cart.subtotal.formatted);
   summaryCart.classList.add("cart-summary--hidden");
-  body.classList.remove("no-overflow-y");
+  content.classList.remove("content-no-scroll");
   hide(summaryCartOverlay);
   populateOrderSummaryUI(cart);
   initPaymentForm(cart);

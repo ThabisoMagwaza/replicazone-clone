@@ -1,14 +1,15 @@
 doctype html
 include includes/components/_head
-.overlay.hidden
-include includes/pages/_checkout
-include includes/components/_cart-summary
-include includes/components/_header
-p.error.error--hidden
-main.container
-  .loader-container
-    .loader
-      .blob.blob--1
-      .blob.blob--2
-include includes/components/_footer
+.content
+  .overlay.hidden
+  include includes/pages/_checkout
+  include includes/components/_cart-summary
+  include includes/components/_header
+  p.error.error--hidden
+  main.container
+    .loader-container
+      .loader
+        .blob.blob--1
+        .blob.blob--2
+  include includes/components/_footer
 script(src='./js/index.js')
