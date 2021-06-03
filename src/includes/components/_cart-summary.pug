@@ -4,6 +4,13 @@
     button.cart-summary-close-btn
       img.cart-summary-close-img(src='./img/cross.svg' alt='')
   .cart-summary__items
+  .cart-summary__empty.hidden
+    p This cart is empty 
+    button.btn.btn-cta
+      svg
+        use(xlink:href='./img/arrow.svg#arrow')
+      span Continue shopping
+
   .cart-summary__buttons
     .cart-summary__total.mb-small
       | Total 

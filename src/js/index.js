@@ -24,6 +24,7 @@ let summaryCloseBtn = document.querySelector(".cart-summary-close-btn");
 let productsContainer = document.querySelector(".container");
 
 let summaryCartOverlay = document.querySelector(".overlay");
+let emptyCartUI = document.querySelector(".cart-summary__empty button");
 
 let currentCart;
 
@@ -34,6 +35,7 @@ cartSummaryRemoveBtn.addEventListener("click", removeItemFromCart);
 cartUpdateBtn.addEventListener("click", updateCartItem);
 checkoutBtn.onclick = () => openCheckoutPageUI(currentCart);
 summaryCartOverlay.onclick = () => closeCartSummaryUI(currentCart);
+emptyCartUI.onclick = () => closeCartSummaryUI(currentCart);
 
 window.onload = init;
 

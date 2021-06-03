@@ -184,3 +184,31 @@
     position: fixed;
     top: 0;
 }
+
+.cart-summary__empty {
+    display: grid;
+    place-items: center;
+    p {
+        font-size: 3rem
+    }
+
+    .btn {
+        justify-self: stretch;
+        margin: 0 3rem;
+
+        svg {
+            width: 3rem;
+            height: 3rem;
+            margin-right: 1rem;
+
+            transition: transform .3s ease;
+        }
+
+        &:hover {
+
+            svg {
+                transform: translateX(-1rem);
+            }
+        }
+    }
+}

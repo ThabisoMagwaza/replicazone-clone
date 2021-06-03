@@ -18,6 +18,8 @@ let checkoutPage = document.querySelector(".checkout");
 let shoppingPageElements = document.querySelectorAll(".checkout ~ *");
 let errorUI = document.querySelector(".error");
 let body = document.querySelector("body");
+let emptyCartUI = document.querySelector(".cart-summary__empty");
+let cartSummaryCheckout = document.querySelector(".cart-summary__buttons");
 
 export function updateProductsUI(products) {
   let altenator = 0;
@@ -53,6 +55,7 @@ export function updateCartPriceUI(price) {
 }
 
 export function updateCartSummaryUI(cart) {
+  checkCartEmpty(cart);
   let cartSummaryStrings = cart.line_items.map((item) =>
     createCartSummaryCard(item)
   );
@@ -100,4 +103,16 @@ export function showErrorUI(message) {
   errorUI.textContent = message;
   errorUI.classList.remove("error--hidden", "hidden");
   setTimeout(() => errorUI.classList.add("error--hidden"), 3000);
+}
+
+function checkCartEmpty(cart) {
+  if (cart.line_items.length == 0) {
+    emptyCartUI.classList.remove("hidden");
+    cartSummaryCheckout.classList.add("hidden");
+    return true;
+  } else {
+    emptyCartUI.classList.add("hidden");
+    cartSummaryCheckout.classList.remove("hidden");
+    return false;
+  }
 }
