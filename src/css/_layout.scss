@@ -1,7 +1,6 @@
 .container, 
 .header__content,
 .footer__content {
-    // width: 60vw;
     width: clamp(30rem,80vw,100rem);
     margin: 0 auto;
 }

@@ -107,12 +107,10 @@ export function showErrorUI(message) {
 
 function checkCartEmpty(cart) {
   if (cart.line_items.length == 0) {
-    emptyCartUI.classList.remove("hidden");
-    cartSummaryCheckout.classList.add("hidden");
-    return true;
+    show(emptyCartUI);
+    hide(cartSummaryUI, cartSummaryCheckout);
   } else {
-    emptyCartUI.classList.add("hidden");
-    cartSummaryCheckout.classList.remove("hidden");
-    return false;
+    show(cartSummaryCheckout, cartSummaryUI);
+    hide(emptyCartUI);
   }
 }
