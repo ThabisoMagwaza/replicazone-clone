@@ -15,6 +15,7 @@
     grid-template-rows: min-content;
 
     transition: transform .3s ease;
+    
 }
 
 .cart-summary--hidden {
@@ -210,5 +211,11 @@
                 transform: translateX(-1rem);
             }
         }
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .cart-summary__buttons  {
+        padding-bottom: 10rem;
     }
 }
