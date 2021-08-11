@@ -159,7 +159,7 @@ export function initPaymentForm(cart) {
   ).textContent = `Pay ${cart.subtotal.formatted_with_symbol}`;
 
   var sdk = new window.YocoSDK({
-    publicKey: "sk_live_053cd758QmJEDnD48304f559a6be",
+    publicKey: "pk_test_079a8dbeJn7lOKO66024",
   });
 
   paymentIntentObj = {
